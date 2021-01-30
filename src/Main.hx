@@ -1,3 +1,4 @@
+import sfx.ScreenShake;
 import h2d.col.Point;
 import hxd.Window;
 import h2d.Text;
@@ -11,6 +12,8 @@ class Main extends hxd.App {
 	var r:Radio;
 	var c:Clock;
 	var w:Walkie;
+
+	var ss:ScreenShake;
 
 	override function init() {
 		EventController.instance.loadEvents();
@@ -46,6 +49,9 @@ class Main extends hxd.App {
 		w = new Walkie(s2d);
 		w.x = Window.getInstance().width - 300;
 		w.y = 100;
+
+		ss = new ScreenShake(s2d);
+		ss.shake(.5,1.2);
 	}
 
 	override function update(dt:Float) {
@@ -53,6 +59,9 @@ class Main extends hxd.App {
 		EventController.instance.update(dt, r.frequency, gmap.getCharLocation());
 
 		c.setTimeText(EventController.instance.getTimeString());
+
+		ss.update(dt);
+
 	}
 
 	function onGameEvent(event:GameEvent):Void {
