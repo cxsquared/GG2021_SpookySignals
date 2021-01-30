@@ -38,11 +38,13 @@ class Clock extends Object {
 					tileImage.sub(x * 64, y * 64, 64, 64)
 		];
 
+		var interactSize = 32;
+
 		// pause
 		pause = new Bitmap(tiles[2], this);
 		pause.x += 65;
 		pause.y += 80;
-		var pauseInteraction = new h2d.Interactive(64, 64, pause);
+		var pauseInteraction = new h2d.Interactive(interactSize, interactSize, pause);
 		pauseInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(0);
 		}
@@ -51,7 +53,7 @@ class Clock extends Object {
 		one = new Bitmap(tiles[1], this);
 		one.x += 125;
 		one.y += 80;
-		var oneInteraction = new h2d.Interactive(64, 64, one);
+		var oneInteraction = new h2d.Interactive(interactSize, interactSize, one);
 		oneInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(1);
 		}
@@ -60,7 +62,7 @@ class Clock extends Object {
 		two = new Bitmap(tiles[4], this);
 		two.x += 175;
 		two.y += 80;
-		var twoInteraction = new h2d.Interactive(64, 64, two);
+		var twoInteraction = new h2d.Interactive(interactSize, interactSize, two);
 		twoInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(2);
 		}
@@ -69,7 +71,7 @@ class Clock extends Object {
 		three = new Bitmap(tiles[6], this);
 		three.x += 235;
 		three.y += 80;
-		var threeInteraction = new h2d.Interactive(64, 64, three);
+		var threeInteraction = new h2d.Interactive(interactSize, interactSize, three);
 		threeInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(3);
 		}

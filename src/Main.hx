@@ -1,14 +1,13 @@
 import hxd.Window;
-import format.gif.Reader;
-import hxd.res.DefaultFont;
 import h2d.Text;
 import objects.*;
 
 class Main extends hxd.App {
-
-	var tf:Text;
+	var radioText:Text;
+	var mapText:Text;
 	var updateList:UpdateList;
 	var c:Clock;
+	var w:Walkie;
 
 	override function init() {
 		EventController.instance.loadEvents();
@@ -16,7 +15,7 @@ class Main extends hxd.App {
 		EventController.instance.registerEventListener(onGameEvent);
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
-		//bg
+		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
 
@@ -29,8 +28,7 @@ class Main extends hxd.App {
 			trace(r.frequency);
 		});
 
-
-		//test
+		// test
 		updateList = new UpdateList(s2d);
 
 		// clock
@@ -38,9 +36,10 @@ class Main extends hxd.App {
 		c.x = Window.getInstance().width - 325;
 		c.y = 25;
 
-		tf = new h2d.Text(DefaultFont.get(), s2d);
-		tf.text = "Hello World!";
-		
+		// walkie
+		w = new Walkie(s2d);
+		w.x = Window.getInstance().width - 300;
+		w.y = 100;
 	}
 
 	override function update(dt:Float) {
@@ -51,7 +50,6 @@ class Main extends hxd.App {
 	}
 
 	function onGameEvent(event:GameEvent):Void {
-		//tf.text = event.text;
 		updateList.addUpdate(event.text);
 		EventController.instance.setSpeed(0);
 	}
