@@ -1,5 +1,6 @@
 -cp src
--lib heaps 
+-lib heaps
+-lib actuate
 -js hello.js
 -main Main 
 --resource res/events.csv@events
