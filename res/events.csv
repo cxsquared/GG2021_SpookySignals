@@ -1,0 +1,3 @@
+Id,Type,Text,AudioFile,DependsOn,Freq,Location,Time
+001_news,Radio,Welcome to the 7am news. I'm your host Bob McBobbin.,,,100,,7
+002_friend,Map,,,001_news,,"0,0",7:15
