@@ -19,7 +19,7 @@ class Main extends hxd.App {
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
 		//filters
-		s2d.filter = new h2d.filter.Bloom(2, 2, 2, 2);
+		s2d.filter = new h2d.filter.Bloom();
 
 		// bg
 		var tile = hxd.Res.bg.toTile();
