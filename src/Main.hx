@@ -1,3 +1,4 @@
+import hxd.Window;
 import format.gif.Reader;
 import hxd.res.DefaultFont;
 import h2d.Text;
@@ -5,6 +6,7 @@ import objects.*;
 
 class Main extends hxd.App {
 	var tf:Text;
+	var c:Clock;
 
 	override function init() {
 		EventController.instance.loadEvents();
@@ -25,6 +27,11 @@ class Main extends hxd.App {
 			trace(r.frequency);
 		});
 
+		// clock
+		c = new Clock(s2d);
+		c.x = Window.getInstance().width - 325;
+		c.y = 25;
+
 		tf = new h2d.Text(DefaultFont.get(), s2d);
 		tf.text = "Hello World!";
 	}
@@ -33,6 +40,7 @@ class Main extends hxd.App {
 		super.update(dt);
 
 		EventController.instance.update(dt);
+		c.setTimeText(EventController.instance.getTimeString());
 	}
 
 	function onGameEvent(event:GameEvent):Void {

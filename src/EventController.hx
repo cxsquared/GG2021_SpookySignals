@@ -73,6 +73,25 @@ class EventController {
 		}
 	}
 
+	public function getTimeString():String {
+		var min = this.time % 60;
+		var hour = Math.floor(this.time / 60) + 7; // 7 hour offest?
+
+		var minText = "";
+		if (min < 10) {
+			minText += "0";
+		}
+		minText += min;
+
+		var hourText = "";
+		if (hour < 10) {
+			hourText += "0";
+		}
+		hourText += hour;
+
+		return '$hourText:$minText';
+	}
+
 	private function tick() {
 		this.currentDt = 0;
 		this.time += 15; // each tick is 15 minutes
