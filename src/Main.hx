@@ -5,6 +5,7 @@ import h2d.Text;
 import objects.*;
 
 class Main extends hxd.App {
+	
 	var tf:Text;
 	var c:Clock;
 

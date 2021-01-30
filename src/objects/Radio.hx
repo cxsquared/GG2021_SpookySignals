@@ -40,7 +40,7 @@ class Radio extends h2d.Object {
         var res = if( hxd.res.Sound.supportedFormat(Wav) ) hxd.Res.audio.radioNoise else null;
         noise = res.play(true);
         noise.pause = true;
-        
+
         //intraction
         var interaction = new h2d.Interactive(20,100, line);
 
@@ -64,7 +64,7 @@ class Radio extends h2d.Object {
             noise.pause = true;
 
             //calc freq
-            this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq-this.minFreq) + this.maxFreq;
+            this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq-this.minFreq) + this.minFreq;
 
             //emit event
             if(onChange != null) {
