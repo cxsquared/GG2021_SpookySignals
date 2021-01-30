@@ -10,6 +10,11 @@ class Main extends hxd.App {
 		tf.text = "Hello World!";
 
 		EventController.instance.loadEvents();
+		
+
+		//bg
+		var tile = hxd.Res.bg.toTile();
+		var bg = new h2d.Bitmap(tile, s2d);
 
 		//rah rah radio
 		var r = new Radio(s2d);

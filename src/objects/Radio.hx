@@ -14,8 +14,8 @@ class Radio extends h2d.Object {
     var line : Graphics;
     var noise : hxd.snd.Channel;
 
-    var minLine = 0;
-    var maxLine = 100;
+    var minLine = 50;
+    var maxLine = 250;
 
     var minFreq = 88;
     var maxFreq = 108;
@@ -24,7 +24,7 @@ class Radio extends h2d.Object {
         super(parent);
 
         //image background
-		var tile = hxd.Res.bg.toTile();
+		var tile = hxd.Res.radio.toTile();
 		var bmp = new h2d.Bitmap(tile, this);
         
         //the line for tunin'
@@ -33,9 +33,14 @@ class Radio extends h2d.Object {
         line.drawRect(0,0,20,100);
         line.endFill();
 
+        line.x = minLine;
+        line.y = 30;
+
         //radio sound
         var res = if( hxd.res.Sound.supportedFormat(Wav) ) hxd.Res.audio.radioNoise else null;
-
+        noise = res.play(true);
+        noise.pause = true;
+        
         //intraction
         var interaction = new h2d.Interactive(20,100, line);
 
@@ -45,7 +50,8 @@ class Radio extends h2d.Object {
 
             //begin the noisening
             if( res != null ) {
-                noise = res.play(true);
+                noise.pause = false;
+                
             }
         }
 
@@ -55,7 +61,7 @@ class Radio extends h2d.Object {
             interaction.stopDrag();
 
             //end sound
-            res.stop();
+            noise.pause = true;
 
             //calc freq
             this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq-this.minFreq) + this.maxFreq;
