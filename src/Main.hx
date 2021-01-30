@@ -18,11 +18,12 @@ class Main extends hxd.App {
 		EventController.instance.registerEventListener(onGameEvent);
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
+		//filters
+		s2d.filter = new h2d.filter.Bloom(2, 2, 2, 2);
+
 		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
-		bg.filter = new h2d.filter.Blur(5);
-
 
 		// my mapona
 		gmap = new GameMap(s2d);
