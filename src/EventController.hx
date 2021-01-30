@@ -77,7 +77,7 @@ class EventController {
 		this.currentDt = 0;
 		this.time += 15; // each tick is 15 minutes
 
-		while (this.events[0].time <= this.time) {
+		while (this.events.length > 0 && this.events[0].time <= this.time) {
 			var potentialEvent = events.shift();
 
 			// Actually check radio and map stuff

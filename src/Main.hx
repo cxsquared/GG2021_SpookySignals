@@ -1,25 +1,32 @@
 import format.gif.Reader;
 import hxd.res.DefaultFont;
 import h2d.Text;
-import objects.Radio;
+import objects.*;
 
 class Main extends hxd.App {
 	var tf:Text;
 
 	override function init() {
-		tf = new h2d.Text(DefaultFont.get(), s2d);
-		tf.text = "Hello World!";
-
 		EventController.instance.loadEvents();
 		EventController.instance.setSpeed(1);
 		EventController.instance.registerEventListener(onGameEvent);
 		hxd.Window.getInstance().addEventTarget(onEvent);
+
+		// bg
+		var tile = hxd.Res.bg.toTile();
+		var bg = new h2d.Bitmap(tile, s2d);
+
+		// my mapona
+		var gmap = new GameMap(s2d);
 
 		// rah rah radio
 		var r = new Radio(s2d);
 		r.onChange(function() {
 			trace(r.frequency);
 		});
+
+		tf = new h2d.Text(DefaultFont.get(), s2d);
+		tf.text = "Hello World!";
 	}
 
 	override function update(dt:Float) {
