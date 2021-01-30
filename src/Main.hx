@@ -1,3 +1,4 @@
+import h2d.col.Point;
 import hxd.Window;
 import h2d.Text;
 import objects.*;
@@ -6,6 +7,8 @@ class Main extends hxd.App {
 	var radioText:Text;
 	var mapText:Text;
 	var updateList:UpdateList;
+	var gmap:GameMap;
+	var r:Radio;
 	var c:Clock;
 	var w:Walkie;
 
@@ -20,10 +23,10 @@ class Main extends hxd.App {
 		var bg = new h2d.Bitmap(tile, s2d);
 
 		// my mapona
-		var gmap = new GameMap(s2d);
+		gmap = new GameMap(s2d);
 
 		// rah rah radio
-		var r = new Radio(s2d);
+		r = new Radio(s2d);
 		r.onChange(function() {
 			trace(r.frequency);
 		});
@@ -45,7 +48,7 @@ class Main extends hxd.App {
 	override function update(dt:Float) {
 		super.update(dt);
 
-		EventController.instance.update(dt);
+		EventController.instance.update(dt, r.frequency, new Point(0, 0));
 		c.setTimeText(EventController.instance.getTimeString());
 	}
 

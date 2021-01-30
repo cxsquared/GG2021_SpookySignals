@@ -12,6 +12,8 @@ class EventController {
 	var secondPerTick = 5; // Not sure about this yet
 	var listeners = new Array<GameEvent->Void>();
 	var speedChangeListeners = new Array<Int->Void>();
+	var freqRange = 2;
+	var locationRange = 5;
 
 	public var currentEvent:GameEvent;
 
@@ -76,9 +78,9 @@ class EventController {
 		}
 	}
 
-	public function update(dt:Float) {
+	public function update(dt:Float, freq:Float, location:Point) {
 		if (shouldTick(dt)) {
-			tick();
+			tick(freq, location);
 		}
 	}
 
@@ -101,7 +103,7 @@ class EventController {
 		return '$hourText:$minText';
 	}
 
-	private function tick() {
+	private function tick(freq:Float, location:Point) {
 		this.currentDt = 0;
 		this.time += 15; // each tick is 15 minutes
 
@@ -109,6 +111,13 @@ class EventController {
 			var potentialEvent = events.shift();
 
 			// Actually check radio and map stuff
+			if (potentialEvent.type == Radio && !between(potentialEvent.freq, freq, freqRange)) {
+				continue; // skip this event
+			} else if (potentialEvent.type == Map
+				&& (!between(potentialEvent.location.x, location.x, locationRange)
+					|| !between(potentialEvent.location.y, location.y, locationRange))) {
+				continue; // skip this event
+			}
 
 			if (potentialEvent.dependsOn.length > 0) {
 				for (eventId in potentialEvent.dependsOn) {
@@ -122,6 +131,10 @@ class EventController {
 				fn(potentialEvent);
 			}
 		}
+	}
+
+	function between(input:Float, compare:Float, offset:Float) {
+		return input <= compare + offset && input >= compare - offset;
 	}
 
 	function shouldTick(dt:Float):Bool {
