@@ -4,13 +4,21 @@ import GameEvent.EventType;
 class EventController {
 	public static final instance:EventController = new EventController();
 
-	var time:Int; // in minutes
+	var time:Int = 0; // in minutes
 	var events:Array<GameEvent>;
+	var triggeredEvents = new Map<String, GameEvent>();
 	var speed:Int = 0; // 0 paused, 1 regular, 2 medium, 3 fast
 	var currentDt:Float = 0;
 	var secondPerTick = 5; // Not sure about this yet
+	var listeners = new Array<GameEvent->Void>();
+
+	public var currentEvent:GameEvent;
 
 	private function new() {}
+
+	public function registerEventListener(fn:GameEvent->Void) {
+		listeners.push(fn);
+	}
 
 	public function loadEvents() {
 		var file = hxd.Res.events.entry.getText();
@@ -49,10 +57,10 @@ class EventController {
 	}
 
 	private function timeToInt(time:String):Int {
-		var hour = time.split(':')[0];
-		var min = time.split(':')[1];
+		var hour = Std.parseInt(time.split(':')[0]);
+		var min = Std.parseInt(time.split(':')[1]);
 
-		return Std.parseInt(min) + Std.parseInt(hour) * 60;
+		return min + Std.int(Math.max(0, hour - 7)) * 60;
 	}
 
 	public function setSpeed(speed:Int) {
@@ -65,26 +73,63 @@ class EventController {
 		}
 	}
 
+	public function getTimeString():String {
+		var min = this.time % 60;
+		var hour = Math.floor(this.time / 60) + 7; // 7 hour offest?
+
+		var minText = "";
+		if (min < 10) {
+			minText += "0";
+		}
+		minText += min;
+
+		var hourText = "";
+		if (hour < 10) {
+			hourText += "0";
+		}
+		hourText += hour;
+
+		return '$hourText:$minText';
+	}
+
 	private function tick() {
-		currentDt = 0;
-		time += 15; // each tick is 15 minutes
+		this.currentDt = 0;
+		this.time += 15; // each tick is 15 minutes
+
+		while (this.events.length > 0 && this.events[0].time <= this.time) {
+			var potentialEvent = events.shift();
+
+			// Actually check radio and map stuff
+
+			if (potentialEvent.dependsOn.length > 0) {
+				for (eventId in potentialEvent.dependsOn) {
+					if (!this.triggeredEvents.exists(eventId)) {
+						continue; // skip this event
+					}
+				}
+			}
+
+			for (fn in listeners) {
+				fn(potentialEvent);
+			}
+		}
 	}
 
 	function shouldTick(dt:Float):Bool {
 		if (this.speed == 0)
 			return false;
 
-		currentDt += dt;
+		this.currentDt += dt;
 
 		switch (this.speed) {
 			case 1: // Regular
-				if (currentDt >= secondPerTick)
+				if (this.currentDt >= this.secondPerTick)
 					return true;
 			case 2:
-				if (currentDt >= secondPerTick / 1.5)
+				if (this.currentDt >= this.secondPerTick / 1.5)
 					return true;
 			case 3:
-				if (currentDt >= secondPerTick / 2)
+				if (this.currentDt >= this.secondPerTick / 2)
 					return true;
 		}
 
