@@ -11,7 +11,6 @@ class Main extends hxd.App {
 
 		EventController.instance.loadEvents();
 
-
 		//bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
@@ -24,6 +23,9 @@ class Main extends hxd.App {
 		r.onChange( function() {
 			trace(r.frequency);
 		});
+
+		//test
+		var ss = new SampleView();
 	}
 
 	override function update(dt:Float) {
