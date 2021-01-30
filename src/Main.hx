@@ -52,6 +52,11 @@ class Main extends hxd.App {
 
 		ss = new ScreenShake(s2d);
 		ss.shake(.5,1.2);
+
+		//shader stuff
+		var umg = new ShaderDanTheShaderMan(s2d);
+		umg.y = 400;
+		umg.x = 600;
 	}
 
 	override function update(dt:Float) {
