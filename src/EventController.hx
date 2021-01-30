@@ -49,9 +49,7 @@ class EventController {
 				case Radio:
 					newEvent.radio(Std.parseFloat(event[5]));
 				case Map:
-					var x = Std.parseInt(event[6].split(",")[0]);
-					var y = Std.parseInt(event[6].split(",")[1]);
-					newEvent.map(new Point(x, y));
+					newEvent.map(event[6]);
 				default:
 					// Do nothing for Event type
 			}
@@ -78,7 +76,7 @@ class EventController {
 		}
 	}
 
-	public function update(dt:Float, freq:Float, location:Point) {
+	public function update(dt:Float, freq:Float, location:String) {
 		if (shouldTick(dt)) {
 			tick(freq, location);
 		}
@@ -103,7 +101,7 @@ class EventController {
 		return '$hourText:$minText';
 	}
 
-	private function tick(freq:Float, location:Point) {
+	private function tick(freq:Float, location:String) {
 		this.currentDt = 0;
 		this.time += 15; // each tick is 15 minutes
 
@@ -113,9 +111,7 @@ class EventController {
 			// Actually check radio and map stuff
 			if (potentialEvent.type == Radio && !between(potentialEvent.freq, freq, freqRange)) {
 				continue; // skip this event
-			} else if (potentialEvent.type == Map
-				&& (!between(potentialEvent.location.x, location.x, locationRange)
-					|| !between(potentialEvent.location.y, location.y, locationRange))) {
+			} else if (potentialEvent.type == Map && potentialEvent.location != location) {
 				continue; // skip this event
 			}
 

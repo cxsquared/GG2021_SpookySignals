@@ -7,7 +7,7 @@ class GameEvent {
 	public var audioFile:String;
 	public var dependsOn:Array<String>;
 	public var freq:Float;
-	public var location:Point;
+	public var location:String;
 	public var time:Int; // minutes (probably from 0)
 
 	public function new(id:String, text:String, audioFile:String, dependsOn:Array<String>, time:Int) {
@@ -23,7 +23,7 @@ class GameEvent {
 		this.type = Radio;
 	}
 
-	public function map(location:Point) {
+	public function map(location:String) {
 		this.location = location;
 		this.type = Map;
 	}

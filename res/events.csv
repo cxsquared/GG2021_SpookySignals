@@ -1,6 +1,6 @@
 Id,Type,Text,AudioFile,DependsOn,Freq,Location,Time
 001_news,Radio,Welcome to the 7:15am news. I'm your host Bob McBobbin.,,,100,,7:15
-002_friend,Map,This is a map event 7:30,,001_news,,"0,0",7:30
+002_friend,Map,This is a map event 7:30,,001_news,,"d,4",7:30
 003_news,Radio,Welcome to the 8am news. I'm your host Bob McBobbin.,,,100,,8:00
 004_news,Radio,Welcome to the 9am news. I'm your host Bob McBobbin.,,,100,,9:00
 005_news,Radio,Welcome to the 10am I'm your host Bob McBobbin.,,,100,,10:00
