@@ -16,6 +16,9 @@ class Main extends hxd.App {
 		EventController.instance.registerEventListener(onGameEvent);
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
+		// filters
+		s2d.filter = new h2d.filter.Bloom(.1, .1);
+
 		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
