@@ -50,8 +50,8 @@ class Main extends hxd.App {
 
 	override function update(dt:Float) {
 		super.update(dt);
+		EventController.instance.update(dt, r.frequency, gmap.getCharLocation());
 
-		EventController.instance.update(dt, r.frequency, new Point(0, 0));
 		c.setTimeText(EventController.instance.getTimeString());
 	}
 
