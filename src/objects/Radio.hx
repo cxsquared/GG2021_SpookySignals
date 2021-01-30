@@ -12,6 +12,7 @@ class Radio extends h2d.Object {
     public var frequency : Float;
     
     var line : Graphics;
+    var noise : hxd.snd.Channel;
 
     var minLine = 0;
     var maxLine = 100;
@@ -22,7 +23,7 @@ class Radio extends h2d.Object {
 	public function new(parent : h2d.Object) {
         super(parent);
 
-        //radio background
+        //image background
 		var tile = hxd.Res.bg.toTile();
 		var bmp = new h2d.Bitmap(tile, this);
         
@@ -32,19 +33,31 @@ class Radio extends h2d.Object {
         line.drawRect(0,0,20,100);
         line.endFill();
 
+        //radio sound
+        var res = if( hxd.res.Sound.supportedFormat(Wav) ) hxd.Res.audio.radioNoise else null;
+
         //intraction
         var interaction = new h2d.Interactive(20,100, line);
 
         //begin draggening
         interaction.onPush = function(event : hxd.Event) {
             interaction.startDrag( doDrag );
+
+            //begin the noisening
+            if( res != null ) {
+                noise = res.play(true);
+            }
         }
 
         //stops the dragging, sets the freq, and emits emit
         interaction.onRelease = function(event : hxd.Event) {
+            //end drag
             interaction.stopDrag();
 
-            //fr mz 47
+            //end sound
+            res.stop();
+
+            //calc freq
             this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq-this.minFreq) + this.maxFreq;
 
             //emit event
