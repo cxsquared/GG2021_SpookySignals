@@ -3,15 +3,15 @@ package objects;
 import hxd.res.DefaultFont;
 import h2d.Object;
 
-class Main extends h2d.Object {
+class Radio extends h2d.Object {
 
-	override function init() {
-
+	public function new(parent : h2d.Object) {
+        super(parent);
+        
+    
+		var tile = hxd.Res.bg.toTile();
+		var bmp = new h2d.Bitmap(tile, this);
 		
     }
     
-    override function update(dt:Float) {
-        // rotate our object every frame
-        if( obj != null ) obj.rotation += 0.6 * dt;
-    }
 }
