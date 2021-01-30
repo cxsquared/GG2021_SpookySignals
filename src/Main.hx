@@ -11,8 +11,11 @@ class Main extends hxd.App {
 
 		EventController.instance.loadEvents();
 
-		//Ah I see no built in update. 
+		//rah rah radio
 		var r = new Radio(s2d);
+		r.onChange( function() {
+			trace(r.frequency);
+		});
 	}
 
 	override function update(dt:Float) {
