@@ -56,7 +56,9 @@ class Main extends hxd.App {
 	}
 
 	function onGameEvent(event:GameEvent):Void {
-		updateList.addUpdate(event.text);
+		for (text in event.text) {
+			updateList.addUpdate(text);
+		}
 		EventController.instance.setSpeed(0);
 	}
 
