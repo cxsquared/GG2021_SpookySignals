@@ -11,6 +11,7 @@ class EventController {
 	var currentDt:Float = 0;
 	var secondPerTick = 5; // Not sure about this yet
 	var listeners = new Array<GameEvent->Void>();
+	var speedChangeListeners = new Array<Int->Void>();
 
 	public var currentEvent:GameEvent;
 
@@ -18,6 +19,10 @@ class EventController {
 
 	public function registerEventListener(fn:GameEvent->Void) {
 		listeners.push(fn);
+	}
+
+	public function registerSpeedListener(fn:Int->Void) {
+		speedChangeListeners.push(fn);
 	}
 
 	public function loadEvents() {
@@ -65,6 +70,10 @@ class EventController {
 
 	public function setSpeed(speed:Int) {
 		this.speed = speed;
+
+		for (fn in speedChangeListeners) {
+			fn(speed);
+		}
 	}
 
 	public function update(dt:Float) {
