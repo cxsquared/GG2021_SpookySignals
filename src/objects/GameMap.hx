@@ -25,7 +25,8 @@ class GameMap extends h2d.Object {
 
 		// move char
 		interaction.onClick = function(event:hxd.Event) {
-			playerChar.x = 1;
+      playerChar.x = 1;
+    
 			Actuate.update(updatePlayer, 1, [playerChar.x, playerChar.y], [200, 200]);
 			// Actuate.tween(playerChar, 10, { x: 200, y: 200, posChange: true });
 

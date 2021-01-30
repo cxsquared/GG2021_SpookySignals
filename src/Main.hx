@@ -21,6 +21,8 @@ class Main extends hxd.App {
 		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
+		bg.filter = new h2d.filter.Blur(5);
+
 
 		// my mapona
 		gmap = new GameMap(s2d);
