@@ -5,7 +5,9 @@ import h2d.Text;
 import objects.*;
 
 class Main extends hxd.App {
+
 	var tf:Text;
+	var updateList:UpdateList;
 	var c:Clock;
 
 	override function init() {
@@ -14,7 +16,7 @@ class Main extends hxd.App {
 		EventController.instance.registerEventListener(onGameEvent);
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
-		// bg
+		//bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
 
@@ -27,6 +29,10 @@ class Main extends hxd.App {
 			trace(r.frequency);
 		});
 
+
+		//test
+		updateList = new UpdateList(s2d);
+
 		// clock
 		c = new Clock(s2d);
 		c.x = Window.getInstance().width - 325;
@@ -34,6 +40,7 @@ class Main extends hxd.App {
 
 		tf = new h2d.Text(DefaultFont.get(), s2d);
 		tf.text = "Hello World!";
+		
 	}
 
 	override function update(dt:Float) {
@@ -44,7 +51,8 @@ class Main extends hxd.App {
 	}
 
 	function onGameEvent(event:GameEvent):Void {
-		tf.text = event.text;
+		//tf.text = event.text;
+		updateList.addUpdate(event.text);
 		EventController.instance.setSpeed(0);
 	}
 

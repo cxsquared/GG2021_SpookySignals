@@ -60,8 +60,7 @@ class Radio extends h2d.Object {
 			noise.pause = true;
 
 			// calc freq
-			this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
-
+			this.frequency = ((line.x + this.minLine) / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
 			// emit event
 			if (onChange != null) {
 				this.changeCallback();
