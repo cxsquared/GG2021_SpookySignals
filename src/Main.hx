@@ -1,5 +1,3 @@
-import h2d.col.Point;
-import hxd.Window;
 import h2d.Text;
 import objects.*;
 
@@ -22,7 +20,7 @@ class Main extends hxd.App {
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
 		bg.filter = new h2d.filter.Blur(5);
-
+		var bounds = bg.getBounds();
 
 		// my mapona
 		gmap = new GameMap(s2d);
@@ -38,12 +36,12 @@ class Main extends hxd.App {
 
 		// clock
 		c = new Clock(s2d);
-		c.x = Window.getInstance().width - 325;
+		c.x = bounds.width - c.getBounds().width - 25;
 		c.y = 25;
 
 		// walkie
 		w = new Walkie(s2d);
-		w.x = Window.getInstance().width - 300;
+		w.x = bounds.width - w.getBounds().width - 25;
 		w.y = 100;
 	}
 
