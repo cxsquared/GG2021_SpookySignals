@@ -21,7 +21,7 @@ class Main extends hxd.App {
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
 		// filters
-		//s2d.filter = new h2d.filter.Bloom(.1, .1);
+		s2d.filter = new h2d.filter.Bloom(.1, .1);
 
 		// bg
 		var tile = hxd.Res.bg.toTile();
@@ -46,13 +46,13 @@ class Main extends hxd.App {
 
 		// clock
 		c = new Clock(s2d);
-		c.x = bounds.width - c.getBounds().width - 25;
-		c.y = 25;
+		c.x = bounds.width - c.getBounds().width - 160;
+		c.y = 550;
 
 		// walkie
 		w = new Walkie(s2d);
 		w.x = bounds.width - w.getBounds().width - 25;
-		w.y = 100;
+		w.y = 410;
 
 		ss = new ScreenShake(s2d);
 		//ss.shake(.5, 1.2);
