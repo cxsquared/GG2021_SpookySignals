@@ -24,6 +24,8 @@ class DialogueController extends Object {
 	var baseDelay = .15;
 	var timeSinceLastSound:Float = 0;
 	var rand = Rand.create();
+	var ports = new Array<Tile>();
+	var portrait:Bitmap;
 
 	public function new(parent:Object) {
 		super(parent);
@@ -73,6 +75,15 @@ class DialogueController extends Object {
 		icon = new Bitmap(icons[0], bg);
 		icon.x = parentBounds.width - iconSize - 50;
 		icon.y = bg.getBounds().height / 2 - iconSize / 2;
+
+		// ports
+		ports.push(hxd.Res.TalkingSister.toTile());
+
+		portrait = new Bitmap(ports[0], bg);
+		portrait.scale(.5);
+		portrait.y = bg.getBounds().height / 2 - portrait.getBounds().height / 2;
+		portrait.x = 20;
+		portrait.visible = false;
 	}
 
 	public function onFinish(fn:Void->Void) {
@@ -102,6 +113,14 @@ class DialogueController extends Object {
 				icon.visible = true;
 			} else {
 				icon.visible = false;
+			}
+
+			var portraitTile = getPortrai(currentDialogue.actor);
+			if (portraitTile != null) {
+				portrait.visible = true;
+				portrait.tile = portraitTile;
+			} else {
+				portrait.visible = false;
 			}
 
 			progress = 0;
@@ -182,6 +201,18 @@ class DialogueController extends Object {
 			return 0xcc89ff;
 
 		return 0xf0f0f0;
+	}
+
+	function getPortrai(actor:String):Tile {
+		var lowerActor = actor.toLowerCase();
+
+		if (lowerActor.indexOf("katie") >= 0)
+			return ports[0];
+
+		if (lowerActor.indexOf("brandon") >= 0)
+			return null;
+
+		return null;
 	}
 
 	function getIconTile(actor:String, type:EventType):Tile {

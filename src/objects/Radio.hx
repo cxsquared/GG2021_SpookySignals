@@ -3,11 +3,9 @@ package objects;
 import hxd.Window;
 import h2d.col.Circle;
 import h2d.col.Point;
+import hxd.res.Sound;
 import h2d.Scene;
-import haxe.macro.Expr.Function;
-import hxd.res.DefaultFont;
 import h2d.Object;
-import h2d.Graphics;
 import h2d.Interactive;
 import h2d.Text;
 
@@ -40,7 +38,6 @@ class Radio extends h2d.Object {
 		// the line for tunin'
 		tile = hxd.Res.radioLine.toTile();
 		line = new h2d.Bitmap(tile, this);
-
 		line.x = minLine;
 		line.y = 215;
 
@@ -61,9 +58,9 @@ class Radio extends h2d.Object {
 
 		// radio sound
 		var res = if (hxd.res.Sound.supportedFormat(Wav)) hxd.Res.audio.radioNoise else null;
+
 		noise = res.play(true);
 		noise.pause = true;
-
 		// knob
 		var tile = hxd.Res.radioDial.toTile();
 		knob = new Object(this);
@@ -72,22 +69,19 @@ class Radio extends h2d.Object {
 		knobGfx.y = - knob.getBounds().height / 2;
 		knob.x = 355;
 		knob.y = 295;
-
 		var knobB = knob.getBounds();
 
 		var knobInteraction = new h2d.Interactive(knobB.width, knobB.height, knob);
+
 		//knobInteraction.isEllipse = true;
+		knobInteraction.isEllipse = true;
 		knobInteraction.x -= knobB.width / 2;
 		knobInteraction.y -= knobB.height / 2;
-
 		knobInteraction.onPush = function(event:hxd.Event) {
 			if (!canMove)
 				return;
-
 			knobInteraction.startDrag(doDrag);
-
 			tuning = true;
-
 			// begin the noisening
 			if (res != null) {
 				noise.pause = false;
@@ -97,13 +91,10 @@ class Radio extends h2d.Object {
 		knobInteraction.onRelease = function(event:hxd.Event) {
 			// end drag
 			knobInteraction.stopDrag();
-
 			// end sound
 			noise.pause = true;
-
 			// calc freq
 			this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
-
 			// emit event
 			if (onChange != null) {
 				this.changeCallback();

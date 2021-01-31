@@ -3,7 +3,8 @@ import GameEvent.EventType;
 class EventController {
 	public static final instance:EventController = new EventController();
 
-	var time:Int = 11 * 60 + 45; // in minutes
+	public var time:Int = 11 * 60 + 45; // in minutes
+
 	var events:List<GameEvent>;
 
 	public var triggeredEvents = new Map<String, GameEvent>();
@@ -11,7 +12,7 @@ class EventController {
 	public var speed:Int = 0; // 0 paused, 1 regular, 2 medium, 3 fast
 
 	var currentDt:Float = 0;
-	var secondPerTick = 5; // Not sure about this yet
+	var secondPerTick = 4; // Not sure about this yet
 	var listeners = new Array<GameEvent->Void>();
 	var speedChangeListeners = new Array<Int->Void>();
 	var freqRange = 2;
@@ -184,7 +185,7 @@ class EventController {
 				if (this.currentDt >= this.secondPerTick / 1.5)
 					return true;
 			case 3:
-				if (this.currentDt >= this.secondPerTick / 2)
+				if (this.currentDt >= this.secondPerTick / 3)
 					return true;
 		}
 
