@@ -29,7 +29,7 @@ class Clock extends Object {
 		tf.color = new Vector(255, 0, 0);
 		tf.x += 160 + baseX;
 		tf.y += baseY;
-		tf.scale(3);
+		tf.scale(2.5);
 		tf.textAlign = Center;
 		tf.text = "00:00";
 

@@ -96,6 +96,7 @@ class Game extends BaseScene {
 		lastSpeed = EventController.instance.speed;
 		EventController.instance.setSpeed(0);
 		EventController.instance.canChangeSpeed = false;
+		r.canMove = false;
 		gmap.canMove = false;
 	}
 
@@ -103,5 +104,6 @@ class Game extends BaseScene {
 		EventController.instance.canChangeSpeed = true;
 		EventController.instance.setSpeed(lastSpeed);
 		gmap.canMove = true;
+		r.canMove = true;
 	}
 }

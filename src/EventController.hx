@@ -113,6 +113,9 @@ class EventController {
 	public function getTimeString():String {
 		var min = this.time % 60;
 		var hour = Math.floor(this.time / 60);
+		if (hour > 12) {
+			hour -= 12;
+		}
 
 		var minText = "";
 		if (min < 10) {
