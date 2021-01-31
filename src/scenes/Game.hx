@@ -1,12 +1,10 @@
 package scenes;
 
-import hxd.Rand;
 import sfx.LightningOverlay;
 import motion.Actuate;
 import h2d.Graphics;
 import h2d.Interactive;
 import h2d.Bitmap;
-import objects.ShaderDanTheShaderMan;
 import sfx.ScreenShake;
 import objects.Walkie;
 import objects.Clock;
@@ -235,5 +233,9 @@ class Game extends BaseScene {
 		EventController.instance.setSpeed(lastSpeed);
 		gmap.canMove = true;
 		r.canMove = true;
+
+		if (EventController.instance.lastEventId == "013_map") {
+			app.setScene(new End(app));
+		}
 	}
 }
