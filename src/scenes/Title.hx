@@ -19,7 +19,7 @@ class Title extends BaseScene {
 
 		var playBtn = new h2d.Bitmap(hxd.Res.btnPlay.toTile(), this);
 		playBtn.y = 450;
-		playBtn.x = 280;
+		playBtn.x = 460;
 
 		var credits = new Text(hxd.Res.fonts.stayhome.toFont(), bg);
 		credits.x = 250;
