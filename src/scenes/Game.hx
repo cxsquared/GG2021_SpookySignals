@@ -142,9 +142,9 @@ class Game extends BaseScene {
 				triggerNewDay();
 			}
 
-			if (EventController.instance.time >= 14 * 60 && !nightBG.visible) {
+			if (EventController.instance.time >= 15 * 60 && !nightBG.visible) {
 				nightBG.visible = true;
-				Actuate.tween(nightBG, 30, {alpha: 1});
+				Actuate.tween(nightBG, 60, {alpha: 1});
 			}
 		}
 	}

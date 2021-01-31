@@ -1,12 +1,7 @@
 package objects;
 
-import h2d.col.Circle;
-import h2d.col.Point;
 import h2d.Scene;
-import haxe.macro.Expr.Function;
-import hxd.res.DefaultFont;
 import h2d.Object;
-import h2d.Graphics;
 import h2d.Interactive;
 
 class Radio extends h2d.Object {
