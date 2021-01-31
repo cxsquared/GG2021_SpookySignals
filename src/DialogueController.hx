@@ -1,6 +1,9 @@
+import GameEvent.EventType;
+import h2d.Bitmap;
 import hxd.Event;
 import hxd.res.DefaultFont;
 import h2d.Text;
+import h2d.Tile;
 import h2d.Graphics;
 import h2d.Object;
 
@@ -13,6 +16,8 @@ class DialogueController extends Object {
 	var actorTxt:Text;
 	var text:Text;
 	var onFinishListeners = new Array<Void->Void>();
+	var icons = new Array<Tile>();
+	var icon:Bitmap;
 
 	public function new(parent:Object) {
 		super(parent);
@@ -41,6 +46,19 @@ class DialogueController extends Object {
 		text.y = 35;
 		text.x = parentBounds.width - (parentBounds.width * .90);
 		text.textAlign = Left;
+
+		var iconSize = 64;
+		var radioIcon = hxd.Res.radio.toTile();
+		radioIcon.scaleToSize(iconSize, iconSize);
+		icons.push(radioIcon);
+
+		var walkieIcon = hxd.Res.walkie.toTile();
+		walkieIcon.scaleToSize(iconSize, iconSize);
+		icons.push(walkieIcon);
+
+		icon = new Bitmap(icons[0], bg);
+		icon.x = parentBounds.width - iconSize - 50;
+		icon.y = bg.getBounds().height / 2 - iconSize / 2;
 	}
 
 	public function onFinish(fn:Void->Void) {
@@ -51,6 +69,7 @@ class DialogueController extends Object {
 		if (currentDialogue == null && dialogueQueue.isEmpty()) {
 			if (bg.visible) {
 				bg.visible = false;
+				icon.visible = false;
 				emitFinish();
 			}
 			return;
@@ -58,6 +77,18 @@ class DialogueController extends Object {
 
 		if (currentDialogue == null) {
 			currentDialogue = dialogueQueue.pop();
+			var newColor = getTextColor(currentDialogue.actor);
+			actorTxt.textColor = newColor;
+			text.textColor = newColor;
+
+			var iconTile = getIconTile(currentDialogue.actor, currentDialogue.type);
+			if (iconTile != null) {
+				icon.tile = iconTile;
+				icon.visible = true;
+			} else {
+				icon.visible = false;
+			}
+
 			progress = 0;
 		}
 
@@ -89,10 +120,12 @@ class DialogueController extends Object {
 	}
 
 	function handlePress() {
-		if (currentDialogue != null && progress >= currentDialogue.text.length) {
-			currentDialogue = null;
-		} else {
-			progress = currentDialogue.text.length;
+		if (currentDialogue != null) {
+			if (progress >= currentDialogue.text.length) {
+				currentDialogue = null;
+			} else {
+				progress = currentDialogue.text.length;
+			}
 		}
 	}
 
@@ -100,5 +133,38 @@ class DialogueController extends Object {
 		for (fn in onFinishListeners) {
 			fn();
 		}
+	}
+
+	function getTextColor(actor:String):Int {
+		var lowerActor = actor.toLowerCase();
+
+		if (lowerActor.indexOf("katie") >= 0)
+			return 0x00fff3;
+
+		if (lowerActor.indexOf("brandon") >= 0)
+			return 0xcc89ff;
+
+		return 0xf0f0f0;
+	}
+
+	function getIconTile(actor:String, type:EventType):Tile {
+		var radios = ['news', 'singer', 'host', 'advertisement'];
+		var walkies = ['radio'];
+		var lowerActor = actor.toLowerCase();
+
+		switch type {
+			case Radio:
+				for (a in radios)
+					if (lowerActor.indexOf(a) >= 0)
+						return icons[0];
+			case Map:
+				for (a in walkies)
+					if (lowerActor.indexOf(a) >= 0)
+						return icons[1];
+			case _:
+				return null;
+		}
+
+		return null;
 	}
 }

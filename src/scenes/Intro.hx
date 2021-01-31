@@ -10,7 +10,6 @@ class Intro extends BaseScene {
 
 		dc = new DialogueController(this);
 		dc.onFinish(onDialogueFinish);
-
 		dc.addDialouge(new Dialogue("KATIE", "Alright... looks like we're recording now."));
 		dc.addDialouge(new Dialogue("BRANDON", "Are you sure? You said that the last three times..."));
 		dc.addDialouge(new Dialogue("KATIE", "Yes, I'm sure, dummy! Now just do your big dramatic opening already!"));

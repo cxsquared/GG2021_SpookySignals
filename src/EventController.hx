@@ -51,7 +51,7 @@ class EventController {
 			for (dialogue in dialogueLines) {
 				var actor = dialogue.split('|')[0];
 				var text = dialogue.split('|')[1];
-				dialogues.push(new Dialogue(actor, text));
+				dialogues.push(new Dialogue(actor, text, type));
 			}
 
 			var times = new Array<TimeRequirement>();
