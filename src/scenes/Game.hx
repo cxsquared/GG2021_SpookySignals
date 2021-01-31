@@ -32,19 +32,25 @@ class Game extends BaseScene {
 		EventController.instance.registerEventListener(onGameEvent);
 
 		// filters
-		app.s2d.filter = new h2d.filter.Bloom(.1, .1);
+		var blom = new h2d.filter.Bloom(.2, .1);
+		this.filter = blom;
+		// Can animate filters :D
+		// Actuate.tween(blom, 100, { amount: 2 });
 
 		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, this);
-		bg.filter = new h2d.filter.Blur(5);
+		// bg.filter = new h2d.filter.Blur(5);
 		var bounds = bg.getBounds();
 
 		// my mapona
 		gmap = new GameMap(this);
+		gmap.x = 300;
+		gmap.y = 40;
 
 		// rah rah radio
 		r = new Radio(this);
+		r.y = 360;
 		r.onChange(function() {
 			trace(r.frequency);
 		});
@@ -54,21 +60,20 @@ class Game extends BaseScene {
 
 		// clock
 		c = new Clock(this);
-		c.x = bounds.width - c.getBounds().width - 25;
-		c.y = 25;
+		c.x = bounds.width - c.getBounds().width - 160;
+		c.y = 550;
 
 		// walkie
 		w = new Walkie(this);
 		w.x = bounds.width - w.getBounds().width - 25;
-		w.y = 100;
+		w.y = 410;
 
 		ss = new ScreenShake(this);
-		ss.shake(.5, 1.2);
+		// ss.shake(.5, 1.2);
 
 		// shader stuff
 		var umg = new ShaderDanTheShaderMan(this);
-		umg.y = 400;
-		umg.x = 600;
+		umg.strike(2);
 
 		// dialogue
 		dialogeController = new DialogueController(this);

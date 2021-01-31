@@ -14,17 +14,15 @@ class GameMap extends h2d.Object {
 	public function new(parent:h2d.Object) {
 		super(parent);
 
-		// position map
-		this.y = 200;
-		this.x = 25;
-
 		// image background
 		var tile = hxd.Res.map.toTile();
 		var bmp = new h2d.Bitmap(tile, this);
 
 		// player character
-		playerChar = new h2d.Bitmap(hxd.Res.pmarker.toTile(), this);
-		playerChar.setScale(.15);
+		var pTile = hxd.Res.iconJenkinson.toTile();
+		//pTile = pTile.center();
+		playerChar = new h2d.Bitmap(pTile, this);
+		playerChar.setScale(1);
 		trace('width:${playerChar.getBounds().width} height:${playerChar.getBounds().height}');
 
 		var playerBounds = playerChar.getBounds();

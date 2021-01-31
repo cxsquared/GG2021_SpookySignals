@@ -19,13 +19,16 @@ class Clock extends Object {
 
 		EventController.instance.registerSpeedListener(onSpeedChange);
 
+		var baseX = -50;
+		var baseY = 25;
+
 		// background
 		var bg = new h2d.Bitmap(hxd.Res.clock.toTile(), this);
 
 		tf = new Text(hxd.Res.fonts.digital.toFont(), this);
 		tf.color = new Vector(255, 0, 0);
-		tf.x += 160;
-		tf.y -= 5;
+		tf.x += 160 + baseX;
+		tf.y += baseY;
 		tf.scale(3);
 		tf.textAlign = Center;
 		tf.text = "00:00";
@@ -39,11 +42,12 @@ class Clock extends Object {
 		];
 
 		var interactSize = 32;
+		var cy = 100;
 
 		// pause
 		pause = new Bitmap(tiles[2], this);
-		pause.x += 65;
-		pause.y += 80;
+		pause.x += 65 + baseX;
+		pause.y += cy + baseY;
 		var pauseInteraction = new h2d.Interactive(interactSize, interactSize, pause);
 		pauseInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(0);
@@ -51,8 +55,8 @@ class Clock extends Object {
 
 		// one
 		one = new Bitmap(tiles[1], this);
-		one.x += 125;
-		one.y += 80;
+		one.x += 125 + baseX;
+		one.y += cy + baseY;
 		var oneInteraction = new h2d.Interactive(interactSize, interactSize, one);
 		oneInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(1);
@@ -60,8 +64,8 @@ class Clock extends Object {
 
 		// two
 		two = new Bitmap(tiles[4], this);
-		two.x += 175;
-		two.y += 80;
+		two.x += 175 + baseX;
+		two.y += cy + baseY;
 		var twoInteraction = new h2d.Interactive(interactSize, interactSize, two);
 		twoInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(2);
@@ -69,8 +73,8 @@ class Clock extends Object {
 
 		// three
 		three = new Bitmap(tiles[6], this);
-		three.x += 235;
-		three.y += 80;
+		three.x += 235 + baseX;
+		three.y += cy + baseY;
 		var threeInteraction = new h2d.Interactive(interactSize, interactSize, three);
 		threeInteraction.onClick = function(event:hxd.Event) {
 			EventController.instance.setSpeed(3);
