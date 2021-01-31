@@ -10,6 +10,8 @@ class Main extends hxd.App {
 	var r:Radio;
 	var c:Clock;
 	var w:Walkie;
+	var dialogeController:DialogueController;
+	var lastSpeed = 1;
 
 	var ss:ScreenShake;
 
@@ -17,7 +19,6 @@ class Main extends hxd.App {
 		EventController.instance.loadEvents();
 		EventController.instance.setSpeed(1);
 		EventController.instance.registerEventListener(onGameEvent);
-		hxd.Window.getInstance().addEventTarget(onEvent);
 
 		// filters
 		s2d.filter = new h2d.filter.Bloom(.1, .1);
@@ -57,31 +58,35 @@ class Main extends hxd.App {
 		var umg = new ShaderDanTheShaderMan(s2d);
 		umg.y = 400;
 		umg.x = 600;
+
+		// dialogue
+		dialogeController = new DialogueController(s2d);
+		dialogeController.onFinish(onDialogueFinish);
 	}
 
 	override function update(dt:Float) {
 		super.update(dt);
 		EventController.instance.update(dt, r.frequency, gmap.getCharLocation());
-
+		dialogeController.update(dt);
 		c.setTimeText(EventController.instance.getTimeString());
-
 		ss.update(dt);
 	}
 
 	function onGameEvent(event:GameEvent):Void {
 		for (text in event.text) {
-			updateList.addUpdate(text);
+			dialogeController.addDialouge(text);
+			// updateList.addUpdate(text);
 		}
+		lastSpeed = EventController.instance.speed;
 		EventController.instance.setSpeed(0);
+		EventController.instance.canChangeSpeed = false;
+		gmap.canMove = false;
 	}
 
-	function onEvent(event:hxd.Event) {
-		switch (event.kind) {
-			case EPush:
-				if (event.button == 0)
-					EventController.instance.setSpeed(1);
-			case _:
-		}
+	function onDialogueFinish() {
+		EventController.instance.canChangeSpeed = true;
+		EventController.instance.setSpeed(lastSpeed);
+		gmap.canMove = true;
 	}
 
 	static function main() {

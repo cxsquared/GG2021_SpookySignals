@@ -9,6 +9,8 @@ class GameMap extends h2d.Object {
 	var playerChar:h2d.Bitmap;
 	var mapPoint:MapPoint;
 
+	public var canMove = true;
+
 	public function new(parent:h2d.Object) {
 		super(parent);
 
@@ -35,6 +37,9 @@ class GameMap extends h2d.Object {
 
 		// move char
 		interaction.onClick = function(event:hxd.Event) {
+			if (!canMove)
+				return;
+
 			var bounds = playerChar.getBounds();
 			var curX = playerChar.x;
 			var curY = playerChar.y;
