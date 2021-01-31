@@ -1,11 +1,11 @@
-package objects;
+package sfx;
 
 import h2d.Bitmap;
 import h2d.Object;
 import h2d.Graphics;
 import motion.Actuate;
 
-class ShaderDanTheShaderMan extends h2d.Object {
+class LightningOverlay extends h2d.Object {
 	public function new(parent:Object) {
 		super(parent);
 
@@ -21,8 +21,6 @@ class ShaderDanTheShaderMan extends h2d.Object {
         white.beginFill(0xFFFFFF);
         white.drawRect(0,0,800,600);
         white.endFill();
-
-       strike(3);
     }
     
     public function strike(count = 1) {
@@ -92,22 +90,6 @@ class Lightning extends hxsl.Shader {
             color *= rand(vec2(time, time));
             color.a *= rand(vec2(time, time)) * ( pixelColor.a * 3 );
             pixelColor = color ;
-
-
-            //Absolute madness
-            //var d =  vec2(0.0, 1.0);
-            //pixelColor.r = rand( vec2(0.0, 200.0));
-            //pixelColor.g = rand( vec2(calculatedUV.x, 200.0) );
-            //pixelColor.b = rand( vec2(calculatedUV.y, 200.0) );
-
-            //Fun old code
-            
-            //pixelColor.x = ltexture.get(calculatedUV).x;
-            //var ouv = calculatedUV;
-            //ouv.x += sin(absolutePosition.y * time);
-            //pixelColor = pixelColor * ltexture.get(ouv);
-           //calculatedUV.y += sin(absolutePosition.y * time);
-
 		}
 
     };
@@ -116,77 +98,3 @@ class Lightning extends hxsl.Shader {
 		super();
 	}
 }
-
-
-
-class SinusDeform extends hxsl.Shader {
-
-	static var SRC = {
-
-		@global var time : Float;
-		@param var speed : Float;
-		@param var frequency : Float;
-		@param var amplitude : Float;
-
-		var calculatedUV : Vec2;
-		var absolutePosition : Vec4;
-
-		function fragment() {
-			calculatedUV.x += sin(absolutePosition.y * frequency + time * speed + absolutePosition.x * 0.1) * amplitude;
-		}
-
-	};
-
-	public function new( frequency = 10., amplitude = 0.01, speed = 1. ) {
-		super();
-		this.frequency = frequency;
-		this.amplitude = amplitude;
-		this.speed = speed;
-	}
-
-}
-
-
-/*
-
-name: Plasma
-type: fragment
-author: triggerHLM (https://www.shadertoy.com/view/MdXGDH)
----
-
-precision mediump float;
-
-uniform float time;
-uniform vec2 resolution;
-
-varying vec2 fragCoord;
-
-const float PI = 3.14159265;
-
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-
-    float time = time * 0.2;
-
-    float color1, color2, color;
-
-    color1 = (sin(dot(fragCoord.xy,vec2(sin(time*3.0),cos(time*3.0)))*0.02+time*3.0)+1.0)/2.0;
-
-    vec2 center = vec2(640.0/2.0, 360.0/2.0) + vec2(640.0/2.0*sin(-time*3.0),360.0/2.0*cos(-time*3.0));
-
-    color2 = (cos(length(fragCoord.xy - center)*0.03)+1.0)/2.0;
-
-    color = (color1+ color2)/2.0;
-
-    float red   = (cos(PI*color/0.5+time*3.0)+1.0)/2.0;
-    float green = (sin(PI*color/0.5+time*3.0)+1.0)/2.0;
-    float blue  = (sin(+time*3.0)+1.0)/2.0;
-
-    fragColor = vec4(red, green, blue, 1.0);
-}
-
-void main(void)
-{
-    mainImage(gl_FragColor, fragCoord.xy);
-    gl_FragColor.a = 1.0;
-}
-*/

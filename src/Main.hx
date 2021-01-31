@@ -1,3 +1,4 @@
+import sfx.LightningOverlay;
 import sfx.ScreenShake;
 import h2d.col.Point;
 import hxd.Window;
@@ -54,9 +55,8 @@ class Main extends hxd.App {
 		ss.shake(.5,1.2);
 
 		//shader stuff
-		var umg = new ShaderDanTheShaderMan(s2d);
-		umg.y = 400;
-		umg.x = 600;
+		var umg = new LightningOverlay(s2d);
+		umg.strike(2);
 	}
 
 	override function update(dt:Float) {

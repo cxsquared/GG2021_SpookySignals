@@ -51,7 +51,6 @@ class Radio extends h2d.Object {
             //begin the noisening
             if( res != null ) {
                 noise.pause = false;
-                
             }
         }
 
