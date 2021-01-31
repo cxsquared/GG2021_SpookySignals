@@ -1,5 +1,7 @@
 package objects;
 
+import h2d.col.Point;
+import h2d.Scene;
 import haxe.macro.Expr.Function;
 import hxd.res.DefaultFont;
 import h2d.Object;
@@ -22,7 +24,7 @@ class Radio extends h2d.Object {
     var minFreq = 88;
     var maxFreq = 108;
 
-	public function new(parent : h2d.Object) {
+	public function new(parent : Scene) {
         super(parent);
 
         //image background
@@ -43,11 +45,12 @@ class Radio extends h2d.Object {
 
         //knob
         var tile = hxd.Res.radioDial.toTile();
+        tile = tile.center();
         knob = new h2d.Bitmap(tile, this);
-        knob.x = 320;
-        knob.y = 260;
+        knob.x = 355;
+        knob.y = 295;
         
-        var knobInteraction = new h2d.Interactive(60,60, knob);
+        var knobInteraction = new h2d.Interactive(90, 90, knob);
 
         knobInteraction.onPush = function(event : hxd.Event) {
 
@@ -84,8 +87,18 @@ class Radio extends h2d.Object {
 
     //make the drag more
     private function doDrag(event : hxd.Event) {
-        line.x += event.relX;
 
+        var prevAngle = knob.rotation;
+
+        //Math for angle-ish
+        
+        var angleAngel = Math.atan2(event.relY,event.relX);
+        knob.rotation += angleAngel * .08;
+
+        //use the angle velocity to move the line
+        line.x += angleAngel * .8;
+
+        //keep the bounds
         if(line.x < minLine) line.x = minLine;
         if(line.x > maxLine) line.x = maxLine;
     }
