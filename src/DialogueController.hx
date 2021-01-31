@@ -1,7 +1,8 @@
+import hxd.Rand;
+import hxd.res.Sound;
 import GameEvent.EventType;
 import h2d.Bitmap;
 import hxd.Event;
-import hxd.res.DefaultFont;
 import h2d.Text;
 import h2d.Tile;
 import h2d.Graphics;
@@ -18,9 +19,23 @@ class DialogueController extends Object {
 	var onFinishListeners = new Array<Void->Void>();
 	var icons = new Array<Tile>();
 	var icon:Bitmap;
+	var sounds = new Array<Sound>();
+	var soundDelay = .25;
+	var baseDelay = .15;
+	var timeSinceLastSound:Float = 0;
+	var rand = Rand.create();
 
 	public function new(parent:Object) {
 		super(parent);
+
+		if (hxd.res.Sound.supportedFormat(Wav)) {
+			sounds.push(hxd.Res.audio.text01);
+			sounds.push(hxd.Res.audio.text02);
+			sounds.push(hxd.Res.audio.text03);
+			sounds.push(hxd.Res.audio.text04);
+			sounds.push(hxd.Res.audio.text05);
+			sounds.push(hxd.Res.audio.text06);
+		}
 
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
@@ -34,16 +49,15 @@ class DialogueController extends Object {
 		bg.endFill();
 		bg.visible = false;
 
-		actorTxt = new Text(DefaultFont.get(), bg);
+		actorTxt = new Text(hxd.Res.fonts.stayhome.toFont(), bg);
 		actorTxt.x = 10;
 		actorTxt.y = 10;
 
-		var font = DefaultFont.get().clone();
-		font.resizeTo(24);
+		var font = hxd.Res.fonts.stayhome.toFont();
 
 		text = new Text(font, bg);
 		text.maxWidth = parentBounds.width * .75;
-		text.y = 35;
+		text.y = 45;
 		text.x = parentBounds.width - (parentBounds.width * .90);
 		text.textAlign = Left;
 
@@ -70,6 +84,7 @@ class DialogueController extends Object {
 			if (bg.visible) {
 				bg.visible = false;
 				icon.visible = false;
+				timeSinceLastSound = 0;
 				emitFinish();
 			}
 			return;
@@ -92,11 +107,33 @@ class DialogueController extends Object {
 			progress = 0;
 		}
 
+		updateSounds(dt);
+
 		actorTxt.text = currentDialogue.actor;
-
 		progress += dt * speed;
-
 		text.text = text.getTextProgress(currentDialogue.text, progress);
+	}
+
+	function updateSounds(dt:Float) {
+		if (currentDialogue != null) {
+			if (progress >= currentDialogue.text.length) {
+				timeSinceLastSound = 0;
+				for (s in sounds) {
+					s.stop();
+				}
+
+				return;
+			} else {
+				timeSinceLastSound += dt;
+
+				if (timeSinceLastSound > soundDelay) {
+					rand.shuffle(sounds);
+					timeSinceLastSound = 0;
+					soundDelay = baseDelay + rand.srand(.25);
+					sounds[0].play();
+				}
+			}
+		}
 	}
 
 	public function addDialouge(d:Dialogue) {

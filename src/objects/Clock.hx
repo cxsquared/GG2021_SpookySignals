@@ -46,7 +46,7 @@ class Clock extends Object {
 		var cy = 100;
 
 		// pause
-		pause = new Bitmap(tiles[2], this);
+		pause = new Bitmap(tiles[3], this);
 		pause.x += 65 + baseX;
 		pause.y += cy + baseY;
 		var pauseInteraction = new h2d.Interactive(interactSize, interactSize, pause);
@@ -55,7 +55,7 @@ class Clock extends Object {
 		}
 
 		// one
-		one = new Bitmap(tiles[1], this);
+		one = new Bitmap(tiles[0], this);
 		one.x += 125 + baseX;
 		one.y += cy + baseY;
 		var oneInteraction = new h2d.Interactive(interactSize, interactSize, one);
@@ -64,7 +64,7 @@ class Clock extends Object {
 		}
 
 		// two
-		two = new Bitmap(tiles[4], this);
+		two = new Bitmap(tiles[5], this);
 		two.x += 175 + baseX;
 		two.y += cy + baseY;
 		var twoInteraction = new h2d.Interactive(interactSize, interactSize, two);
@@ -85,25 +85,25 @@ class Clock extends Object {
 	function onSpeedChange(speed:Int):Void {
 		switch speed {
 			case 0:
-				pause.tile = tiles[3];
-				one.tile = tiles[0];
-				two.tile = tiles[4];
-				three.tile = tiles[6];
-			case 1:
 				pause.tile = tiles[2];
 				one.tile = tiles[1];
-				two.tile = tiles[4];
-				three.tile = tiles[6];
-			case 2:
-				pause.tile = tiles[2];
+				two.tile = tiles[5];
+				three.tile = tiles[7];
+			case 1:
+				pause.tile = tiles[3];
 				one.tile = tiles[0];
 				two.tile = tiles[5];
-				three.tile = tiles[6];
-			case 3:
-				pause.tile = tiles[2];
-				one.tile = tiles[0];
+				three.tile = tiles[7];
+			case 2:
+				pause.tile = tiles[3];
+				one.tile = tiles[1];
 				two.tile = tiles[4];
 				three.tile = tiles[7];
+			case 3:
+				pause.tile = tiles[3];
+				one.tile = tiles[1];
+				two.tile = tiles[5];
+				three.tile = tiles[6];
 		}
 	}
 

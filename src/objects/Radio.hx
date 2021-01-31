@@ -1,5 +1,6 @@
 package objects;
 
+import h2d.col.Circle;
 import h2d.col.Point;
 import h2d.Scene;
 import haxe.macro.Expr.Function;
@@ -51,7 +52,12 @@ class Radio extends h2d.Object {
 		knob.x = 355;
 		knob.y = 295;
 
-		var knobInteraction = new h2d.Interactive(90, 90, knob);
+		var knobB = knob.getBounds();
+
+		var knobInteraction = new h2d.Interactive(knobB.width, knobB.height, knob);
+		knobInteraction.isEllipse = true;
+		knobInteraction.x -= knobB.width / 2;
+		knobInteraction.y -= knobB.height / 2;
 
 		knobInteraction.onPush = function(event:hxd.Event) {
 			if (!canMove)
@@ -91,6 +97,7 @@ class Radio extends h2d.Object {
 	// make the drag more
 	private function doDrag(event:hxd.Event) {
 		var prevAngle = knob.rotation;
+		var knobB = knob.getBounds();
 
 		// Math for angle-ish
 
