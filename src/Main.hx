@@ -1,3 +1,4 @@
+import motion.Actuate;
 import sfx.LightningOverlay;
 import sfx.ScreenShake;
 import h2d.Text;
@@ -21,7 +22,10 @@ class Main extends hxd.App {
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
 		// filters
-		s2d.filter = new h2d.filter.Bloom(.1, .1);
+		var blom = new h2d.filter.Bloom(.2, .1);
+		s2d.filter = blom;
+		//Can animate filters :D
+		//Actuate.tween(blom, 100, { amount: 2 });
 
 		// bg
 		var tile = hxd.Res.bg.toTile();
