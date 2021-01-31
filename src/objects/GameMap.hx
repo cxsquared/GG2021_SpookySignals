@@ -74,7 +74,7 @@ class GameMap extends h2d.Object {
 			var targetY = event.relY - bounds.height / 2;
 
 			var distance = Math.sqrt(Math.pow(targetX - curX, 2) + Math.pow(targetY - curY, 2));
-			var playerSpeed = .025;
+			var playerSpeed = .02;
 			Actuate.update(updatePlayer, distance * playerSpeed, [curX, curY], [targetX, targetY]).onComplete(onPlayerMove).ease(Linear.easeNone);
 			playerChar.tile = pTiles[0];
 

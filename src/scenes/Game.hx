@@ -101,6 +101,13 @@ class Game extends BaseScene {
 		dialogeController = new DialogueController(this);
 
 		dialogeController.onFinish(onDialogueFinish);
+
+		dialogeController.addDialouge(new Dialogue("BRANDON", "Have you heard the news this morning? Switch to 100.3 on the radio."));
+		lastSpeed = EventController.instance.speed;
+		EventController.instance.setSpeed(0);
+		EventController.instance.canChangeSpeed = false;
+		r.canMove = false;
+		gmap.canMove = false;
 	}
 
 	function triggerNewDay(?event:hxd.Event) {
@@ -126,8 +133,62 @@ class Game extends BaseScene {
 		nightBG.alpha = 0;
 		fullscreen.remove();
 		EventController.instance.time = 7 * 60;
-		dialogeController.addDialouge(new Dialogue("KATIE", "It's a new day"));
+		lastSpeed = 1;
+		showNewDayDialogue();
 		gmap.resetPlayer();
+	}
+
+	function showNewDayDialogue() {
+		var triggeredEvents = EventController.instance.triggeredEvents;
+		if (triggeredEvents == null) {
+			return;
+		}
+
+		if (triggeredEvents.exists("012_radio")) {
+			dialogeController.addDialouge(new Dialogue("Brandon", "This is all getting so crazy. You wrote down those codes, right?"));
+			dialogeController.addDialouge(new Dialogue("Katie", "Yup! The first one was - . -. .--. --"));
+			dialogeController.addDialouge(new Dialogue("Katie", "And the second was 1-2-1-14-4-15-14-5-4 and 13-9-14-5"));
+			dialogeController.addDialouge(new Dialogue("Brandon", "We're getting so close!"));
+		} else if (triggeredEvents.exists("011_radio")) {
+			dialogeController.addDialouge(new Dialogue("Brandon", "This is all getting so crazy. You wrote down those codes, right?"));
+			dialogeController.addDialouge(new Dialogue("Katie", "Yup! The first one was - . -. .--. --"));
+			dialogeController.addDialouge(new Dialogue("Katie", "And we still need the second code from the radio."));
+			dialogeController.addDialouge(new Dialogue("Brandon", "We're getting so close!"));
+		} else if (triggeredEvents.exists("010_map")) {
+			dialogeController.addDialouge(new Dialogue("Katie", "Remind me again what Mr. Jenkinson wanted us to do?"));
+			dialogeController.addDialouge(new Dialogue("Brandon", "He said we needed to listen to channel 112.1 at 8:45 am and 2:15 pm."));
+			dialogeController.addDialouge(new Dialogue("Katie", "Oh, right!"));
+		} else if (triggeredEvents.exists("009_radio")) {
+			dialogeController.addDialouge(new Dialogue("Katie",
+				"We still need to figure out that crazy guy's secret message. Why does he like Formula 1 so much?"));
+			dialogeController.addDialouge(new Dialogue("Brandon", "More importantly, why did he feel the need to tell us?"));
+			dialogeController.addDialouge(new Dialogue("Katie", "We'll figure it out eventually. We also have to remember to go 7:30 am as well though"));
+		} else if (triggeredEvents.exists("008_map")) {
+			dialogeController.addDialouge(new Dialogue("Brandon",
+				"I still can't get over the fact this thing left a message in the dirt. I wonder who it's trying to communicate with."));
+			dialogeController.addDialouge(new Dialogue("katie", "I know right! I just don't get it."));
+			dialogeController.addDialouge(new Dialogue("Brandon", "103.0 - 10.30 has to mean something..."));
+		} else if (triggeredEvents.exists("007_radio")) {
+			dialogeController.addDialouge(new Dialogue("Katie", "I'm ready to go check out that junkyard whenever you are!"));
+			dialogeController.addDialouge(new Dialogue("Brandon", "Do you remember their hours?"));
+			dialogeController.addDialouge(new Dialogue("Katie", "Yeah! It was 9 am - 4 pm!"));
+		} else if (triggeredEvents.exists("006_map")) {
+			dialogeController.addDialouge(new Dialogue("Brandon", "I can't get that number out of my head. What is supposed to mean 4.99?"));
+		} else if (triggeredEvents.exists("005_song")) {
+			dialogeController.addDialouge(new Dialogue("Katie",
+				"Well, we figured out that the grey hour is 9, but where does \"much timber mask the light of day\"?"));
+		} else if (triggeredEvents.exists("004_map")) {
+			dialogeController.addDialouge(new Dialogue("Brandon", "What was that weird message again?"));
+			dialogeController.addDialouge(new Dialogue("Katie", "\"Much timber masks the light of day, be there when the clock strikes grey.\""));
+		} else if (triggeredEvents.exists("003_news")) {
+			dialogeController.addDialouge(new Dialogue("KATIE", "Can I please go to the fair today! I don't wanna miss out on all the fun!"));
+			dialogeController.addDialouge(new Dialogue("Brandon",
+				"I know. You can take a break. Just remember to still take your equipment. It starts at noon so that should still be plenty of time for us to do some investigating."));
+			dialogeController.addDialouge(new Dialogue("Katie", "Yes! Funnel cake here I come!"));
+		} else {
+			dialogeController.addDialouge(new Dialogue("Brandon", "The start of a new day! We should listen to news on the radio or explore a little."));
+			dialogeController.addDialouge(new Dialogue("Katie", "And don't forget we can speed up time with the clock if we need to."));
+		}
 	}
 
 	override public function update(dt:Float) {

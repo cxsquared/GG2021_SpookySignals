@@ -1,3 +1,4 @@
+import scenes.Title;
 import scenes.Game;
 import scenes.BaseScene;
 import scenes.Intro;
@@ -5,7 +6,7 @@ import scenes.Intro;
 class Main extends hxd.App {
 	override function init() {
 		#if !debug
-		setScene(new Intro(this));
+		setScene(new Title(this));
 		#else
 		setScene(new Game(this));
 		#end
