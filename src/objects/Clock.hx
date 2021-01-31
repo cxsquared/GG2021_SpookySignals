@@ -34,11 +34,12 @@ class Clock extends Object {
 		tf.text = "00:00";
 
 		// buttons
+		var bs = 64;
 		var tileImage = hxd.Res.clock_arrows.toTile();
 		tiles = [
 			for (y in 0...2)
 				for (x in 0...4)
-					tileImage.sub(x * 64, y * 64, 64, 64)
+					tileImage.sub(x * bs, y * bs, bs, bs)
 		];
 
 		var interactSize = 32;
