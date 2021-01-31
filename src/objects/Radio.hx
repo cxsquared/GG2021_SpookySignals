@@ -26,6 +26,10 @@ class Radio extends h2d.Object {
 	var minFreq = 80;
 	var maxFreq = 120;
 
+	var lpx = 0.0;
+	var lpy = 0.0;
+	var lr = 0.0;
+
 	public var canMove = true;
 
 	public function new(parent:Scene) {
@@ -80,8 +84,13 @@ class Radio extends h2d.Object {
 		knobInteraction.onPush = function(event:hxd.Event) {
 			if (!canMove)
 				return;
+
 			knobInteraction.startDrag(doDrag);
 			tuning = true;
+
+			lpx = event.relX;
+			lpy = event.relY;
+
 			// begin the noisening
 			if (res != null) {
 				noise.pause = false;
@@ -111,26 +120,35 @@ class Radio extends h2d.Object {
 		var prevAngle = knob.rotation;
 		var knobB = knob.getBounds();
 
+		var dx = lpx - event.relX;
+		var dy = lpy - event.relY;
+		lpx = event.relX;
+		lpy = event.relY;
+
 		// Math for angle-ish
 		var angleAngel = Math.atan2(event.relY, event.relX);
-		trace(angleAngel);
-		//angleAngel = hxd.Math.clamp(angleAngel, -1.0, 1.0);		
-		knob.rotation += angleAngel * .08;
+		//trace(dx,dy,angleAngel);
+		//trace(angleAngel);
+		//knob.rotation = angleAngel;
 
 		//set rotation code
-		/*
 		var p = this.localToGlobal( new Point(knob.x, knob.y) );
 		var p2 = this.globalToLocal( new Point( Window.getInstance().mouseX, Window.getInstance().mouseY) );
 		var dx = p2.x - (knob.x + knob.getBounds().width/2);
 		var dy = p2.y - (knob.y + knob.getBounds().height/2);
 		
 		var umg = Math.atan2(dy,dx);
-		trace(dx, dy, umg);
 		knob.rotation = umg;
-		 */
 
+		var rdiff = lr - knob.rotation;
+
+		if(Math.abs(rdiff) > .07) {
+			rdiff = 0;
+		}
+
+		trace(rdiff);
 		// use the angle velocity to move the line
-		line.x += angleAngel * .8;
+		line.x -= rdiff * 30;
 
 		// keep the bounds
 		if (line.x < minLine)
@@ -142,6 +160,8 @@ class Radio extends h2d.Object {
 		//freq count
 		this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
 		hrzTxt.text = toFixed(this.frequency) + "hz";
+
+		lr = knob.rotation;
 	}
 
 	function toFixed(num : Float) : Float {
