@@ -75,6 +75,10 @@ class DialogueController extends Object {
 			bg.visible = true;
 	}
 
+	override public function onRemove() {
+		hxd.Window.getInstance().removeEventTarget(onEvent);
+	}
+
 	function onEvent(event:Event) {
 		switch (event.kind) {
 			case EPush:
@@ -85,7 +89,7 @@ class DialogueController extends Object {
 	}
 
 	function handlePress() {
-		if (progress >= currentDialogue.text.length && currentDialogue != null) {
+		if (currentDialogue != null && progress >= currentDialogue.text.length) {
 			currentDialogue = null;
 		} else {
 			progress = currentDialogue.text.length;
