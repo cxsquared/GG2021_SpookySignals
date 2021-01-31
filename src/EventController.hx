@@ -8,6 +8,7 @@ class EventController {
 	var events:List<GameEvent>;
 
 	public var triggeredEvents = new Map<String, GameEvent>();
+	public var lastEventId:String;
 
 	public var speed:Int = 0; // 0 paused, 1 regular, 2 medium, 3 fast
 
@@ -148,11 +149,16 @@ class EventController {
 			}
 
 			if (event.dependsOn.length > 0) {
+				var shouldSkip = false;
 				for (eventId in event.dependsOn) {
 					if (!this.triggeredEvents.exists(eventId)) {
-						continue; // skip this event
+						shouldSkip = true;
+						continue;
 					}
 				}
+
+				if (shouldSkip)
+					continue;
 			}
 
 			if (event.shouldTrigger(time)) {
@@ -162,8 +168,11 @@ class EventController {
 				hasTriggered = true;
 			}
 
-			if (hasTriggered)
+			if (hasTriggered) {
 				events.remove(event); // We can do this because it's a list not an array
+				triggeredEvents.set(event.id, event);
+				lastEventId = event.id;
+			}
 		}
 	}
 
@@ -182,10 +191,10 @@ class EventController {
 				if (this.currentDt >= this.secondPerTick)
 					return true;
 			case 2:
-				if (this.currentDt >= this.secondPerTick / 1.5)
+				if (this.currentDt >= this.secondPerTick / 2)
 					return true;
 			case 3:
-				if (this.currentDt >= this.secondPerTick / 3)
+				if (this.currentDt >= this.secondPerTick / 4)
 					return true;
 		}
 

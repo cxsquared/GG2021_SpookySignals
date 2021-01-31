@@ -1,5 +1,7 @@
 package scenes;
 
+import hxd.Rand;
+import sfx.LightningOverlay;
 import motion.Actuate;
 import h2d.Graphics;
 import h2d.Interactive;
@@ -29,6 +31,7 @@ class Game extends BaseScene {
 	var ndTiles = new Array<Tile>();
 	var nightBG:Bitmap;
 	var dayEnding = false;
+	var umg:LightningOverlay;
 
 	var ss:ScreenShake;
 
@@ -45,6 +48,8 @@ class Game extends BaseScene {
 		// Can animate filters :D
 		// Actuate.tween(blom, 100, { amount: 2 });
 
+		umg = new LightningOverlay(this);
+
 		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, this);
@@ -56,7 +61,7 @@ class Game extends BaseScene {
 		nightBG.alpha = 0;
 
 		// my mapona
-		gmap = new GameMap(this);
+		gmap = new GameMap(this, onGameEvent);
 		gmap.x = 300;
 		gmap.y = 40;
 
@@ -82,10 +87,6 @@ class Game extends BaseScene {
 
 		ss = new ScreenShake(this);
 		// ss.shake(.5, 1.2);
-
-		// shader stuff
-		var umg = new ShaderDanTheShaderMan(this);
-		umg.strike(2);
 
 		// next Day
 		var ndTile = hxd.Res.endday.toTile();
@@ -142,9 +143,17 @@ class Game extends BaseScene {
 				triggerNewDay();
 			}
 
-			if (EventController.instance.time >= 15 * 60 && !nightBG.visible) {
-				nightBG.visible = true;
-				Actuate.tween(nightBG, 60, {alpha: 1});
+			if (EventController.instance.time >= 15 * 60) {
+				if (!nightBG.visible) {
+					nightBG.visible = true;
+					Actuate.tween(nightBG, 60, {alpha: 1});
+				}
+
+				/*
+					if (Rand.create().rand() < .75) {
+						umg.strike(2);
+					}
+				 */
 			}
 		}
 	}

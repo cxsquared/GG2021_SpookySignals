@@ -1,8 +1,14 @@
 package objects;
 
+import motion.easing.Linear;
+import motion.easing.Elastic;
+import motion.easing.Quad;
+import motion.easing.Quart;
+import format.abc.Data.ABCData;
 import h2d.col.Point;
 import h2d.Bitmap;
 import h2d.Object;
+import h2d.Tile.Tile;
 import motion.Actuate;
 
 class GameMap extends h2d.Object {
@@ -10,11 +16,15 @@ class GameMap extends h2d.Object {
 	var mapPoint:MapPoint;
 	var jenkinson:Bitmap;
 	var bmp:Bitmap;
+	var onGameEvent:GameEvent->Void;
+	var pTiles = new Array<Tile>();
 
 	public var canMove = true;
 
-	public function new(parent:h2d.Object) {
+	public function new(parent:h2d.Object, onGameEvent:GameEvent->Void) {
 		super(parent);
+
+		this.onGameEvent = onGameEvent;
 
 		// image background
 		var tile = hxd.Res.map.toTile();
@@ -36,14 +46,17 @@ class GameMap extends h2d.Object {
 		var iconMines = new h2d.Bitmap(hxd.Res.iconMines.toTile(), this);
 		setLocation(iconMines, 'a', 1);
 		var iconTownHall = new h2d.Bitmap(hxd.Res.iconTownHall.toTile(), this);
-		setLocation(iconTownHall, 'e', 5);
+		setLocation(iconTownHall, 'b', 2);
 		var iconTreeHouse = new h2d.Bitmap(hxd.Res.iconTreehouse.toTile(), this);
 		setLocation(iconTreeHouse, 'd', 4);
+		var corn = new h2d.Bitmap(hxd.Res.IconCorn.toTile(), this);
+		setLocation(corn, 'e', 5);
 
 		// player character
-		var pTile = hxd.Res.iconJenkinson.toTile();
-		// pTile = pTile.center();
-		playerChar = new h2d.Bitmap(pTile, this);
+		var pTile = hxd.Res.Stickman.toTile();
+		pTiles.push(pTile.sub(0, 0, 33, 47));
+		pTiles.push(pTile.sub(33, 0, 27, 47));
+		playerChar = new h2d.Bitmap(pTiles[1], this);
 		playerChar.setScale(1);
 
 		var playerBounds = playerChar.getBounds();
@@ -61,14 +74,29 @@ class GameMap extends h2d.Object {
 			var targetY = event.relY - bounds.height / 2;
 
 			var distance = Math.sqrt(Math.pow(targetX - curX, 2) + Math.pow(targetY - curY, 2));
-			var playerSpeed = .05;
-			Actuate.update(updatePlayer, distance * playerSpeed, [curX, curY], [targetX, targetY]);
+			var playerSpeed = .025;
+			Actuate.update(updatePlayer, distance * playerSpeed, [curX, curY], [targetX, targetY]).onComplete(onPlayerMove).ease(Linear.easeNone);
+			playerChar.tile = pTiles[0];
 
 			if (EventController.instance.triggeredEvents.exists('009_radio')
+				&& !EventController.instance.triggeredEvents.exists('099_event')
 				&& letterNumToString(mapPoint.getLetterLocation(targetY), mapPoint.getNumberLocation(targetX)) == 'f,1') {
 				jenkinson.visible = true;
+				jenkinson.alpha = 0;
+				Actuate.tween(jenkinson, 1, {alpha: 1});
+				var dc = new Array<Dialogue>();
+				dc.push(new Dialogue("BRANDON", "What was the podcast host's clue again?"));
+				dc.push(new Dialogue("Katie", "\"Formula 1 is my favorite sport.\" Why?"));
+				dc.push(new Dialogue("Brandon",
+					"What if by formuala 1 he means F1? Look at this map of Westbrook! The coordinates F and 1 meet up in the middle of nowhere! "));
+				dc.push(new Dialogue("Katie", "That's where his house could be! Great work Brandon! Now I just have to be there at 7:30 in the morning!"));
+				onGameEvent(new GameEvent("099_event", dc, "", new Array<String>(), [new TimeRequirement(0, GE)]));
 			}
 		}
+	}
+
+	function onPlayerMove() {
+		playerChar.tile = pTiles[1];
 	}
 
 	public function resetPlayer() {
