@@ -31,7 +31,10 @@ class EventController {
 	}
 
 	public function loadEvents() {
+		// replacing double quotes to parse everything correctly
+		var dqreg = ~/""/g;
 		var file = hxd.Res.events.entry.getText();
+		file = dqreg.replace(file, "/dq/");
 		var csv = new CSVReader(file);
 		var eventRows = csv.parseSheet();
 		eventRows.shift(); // remove the headers
@@ -41,7 +44,7 @@ class EventController {
 		for (event in eventRows) {
 			var type = EventType.createByName(event[1]);
 			var dependsOn = new Array<String>();
-			for (eventId in event[4].split(',')) {
+			for (eventId in event[4].split('|')) {
 				if (eventId.length > 0)
 					dependsOn.push(eventId);
 			}
@@ -51,11 +54,17 @@ class EventController {
 			for (dialogue in dialogueLines) {
 				var actor = dialogue.split('|')[0];
 				var text = dialogue.split('|')[1];
+				if (text.indexOf("/dq/") >= 0) {
+					// undo us changing double quotes
+					var undqreg = ~/\/dq\//g;
+					text = undqreg.replace(text, "\"");
+				}
+
 				dialogues.push(new Dialogue(actor, text, type));
 			}
 
 			var times = new Array<TimeRequirement>();
-			var timeLines = event[7].split(',');
+			var timeLines = event[7].split('|');
 			for (time in timeLines) {
 				var mod = time.substr(0, 2);
 				var time = time.substr(2);

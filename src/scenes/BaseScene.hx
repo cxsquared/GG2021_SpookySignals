@@ -11,7 +11,8 @@ class BaseScene extends Scene {
 		super();
 		this.app = app;
 
-		scaleMode = Fixed(1280, 720, 1, Center, Center);
+		// scaleMode = Fixed(1280, 720, 1, Center, Center);
+		scaleMode = Stretch(1280, 720);
 
 		var bg = new Graphics(this);
 		bg.beginFill(0xf0f0f0, 1);

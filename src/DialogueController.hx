@@ -26,11 +26,11 @@ class DialogueController extends Object {
 
 		var parentBounds = parent.getBounds();
 
-		this.y = parentBounds.height - parentBounds.height / 4;
+		this.y = parentBounds.height - parentBounds.height / 3;
 
 		bg = new Graphics(this);
-		bg.beginFill(0x000000, .5);
-		bg.drawRect(0, 0, parentBounds.width, parentBounds.height / 4);
+		bg.beginFill(0x000000, .75);
+		bg.drawRect(0, 0, parentBounds.width, parentBounds.height / 3);
 		bg.endFill();
 		bg.visible = false;
 
