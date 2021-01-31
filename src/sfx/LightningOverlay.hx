@@ -7,14 +7,17 @@ import motion.Actuate;
 
 class LightningOverlay extends h2d.Object {
 	public function new(parent:Object) {
-		super(parent);
-
-        var bg = new Bitmap(hxd.Res.pmarker.toTile(), this);
+        super(parent);
+        
+        var bounds = parent.getBounds();
+        var t = h2d.Tile.fromColor(0xffffff,cast(bounds.width, Int),cast(bounds.height, Int));
+        var bg = new Bitmap(t, this);
 
         //var l = new Bitmap(hxd.Res.map.toTile(), this);
 
         var shader = new Lightning();
         shader.ltexture = hxd.Res.map.toTile().getTexture();
+        shader.strikeCount = 2;
         bg.addShader(shader);
 
         var white : Graphics = new Graphics(this);
@@ -40,7 +43,7 @@ class Lightning extends hxsl.Shader {
         var pixelColor : Vec4;
 
         @param var ltexture : Sampler2D;
-
+        @param var strikeCount = 5;
         
         // rand, noise and fbm function
         function rand(n : Vec2 ) : Float {
@@ -77,8 +80,10 @@ class Lightning extends hxsl.Shader {
             var pct = 0.0;
             var buffer = 0.0;
 
+           
+
             // add more lightning
-            for ( i in 0 ... 5){
+            for ( i in 0 ... strikeCount){
                 t = calculatedUV.yx * vec2(1.0,0.0) + vec2(float(i), -float(i)) - time*3.0;
                 y = fbm(t)*0.5;
                 pct = plot(calculatedUV.yx, y, 0.02);

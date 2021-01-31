@@ -21,19 +21,22 @@ class Main extends hxd.App {
 		hxd.Window.getInstance().addEventTarget(onEvent);
 
 		// filters
-		s2d.filter = new h2d.filter.Bloom(.1, .1);
+		//s2d.filter = new h2d.filter.Bloom(.1, .1);
 
 		// bg
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, s2d);
-		bg.filter = new h2d.filter.Blur(5);
+		//bg.filter = new h2d.filter.Blur(5);
 		var bounds = bg.getBounds();
 
 		// my mapona
 		gmap = new GameMap(s2d);
+		gmap.x = 300;
+		gmap.y = 40;
 
 		// rah rah radio
 		r = new Radio(s2d);
+		r.y = 360;
 		r.onChange(function() {
 			trace(r.frequency);
 		});
@@ -52,7 +55,7 @@ class Main extends hxd.App {
 		w.y = 100;
 
 		ss = new ScreenShake(s2d);
-		ss.shake(.5, 1.2);
+		//ss.shake(.5, 1.2);
 
 		//shader stuff
 		var umg = new LightningOverlay(s2d);
