@@ -5,7 +5,8 @@ class EventController {
 
 	var time:Int = 11 * 60 + 45; // in minutes
 	var events:List<GameEvent>;
-	var triggeredEvents = new Map<String, GameEvent>();
+
+	public var triggeredEvents = new Map<String, GameEvent>();
 
 	public var speed:Int = 0; // 0 paused, 1 regular, 2 medium, 3 fast
 
@@ -160,8 +161,10 @@ class EventController {
 				hasTriggered = true;
 			}
 
-			if (hasTriggered || event.shouldRemove(time))
-				events.remove(event); // We can do this because it's a list not an array
+			/*
+				if (hasTriggered || event.shouldRemove(time))
+					events.remove(event); // We can do this because it's a list not an array
+			 */
 		}
 	}
 
