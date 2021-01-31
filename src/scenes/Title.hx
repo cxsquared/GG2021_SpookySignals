@@ -10,9 +10,12 @@ class Title extends BaseScene {
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, this);
 
-		var logo = new h2d.Bitmap(hxd.Res.logo.toTile(), this);
-		logo.y = 110;
-		logo.x = 250;
+        var tile = hxd.Res.bg.toTile();
+        var bg = new h2d.Bitmap(tile, this);
+        var logo = new h2d.Bitmap(hxd.Res.logo.toTile(), this);
+        logo.y = 160;
+        logo.x = 150;
+
 
 		var playBtn = new h2d.Bitmap(hxd.Res.btnPlay.toTile(), this);
 		playBtn.y = 450;
