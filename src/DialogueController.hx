@@ -79,6 +79,7 @@ class DialogueController extends Object {
 		// ports
 		ports.push(hxd.Res.TalkingSister.toTile());
 		ports.push(hxd.Res.TalkingBrother.toTile());
+		ports.push(hxd.Res.TalkingJenkinson.toTile());
 
 		portrait = new Bitmap(ports[0], bg);
 		portrait.scale(.5);
@@ -212,6 +213,9 @@ class DialogueController extends Object {
 
 		if (lowerActor.indexOf("brandon") >= 0)
 			return ports[1];
+
+		if (lowerActor.indexOf("Jenkinson") >= 0)
+			return ports[2];
 
 		return null;
 	}

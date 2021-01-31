@@ -57,6 +57,7 @@ class EventController {
 			for (dialogue in dialogueLines) {
 				var actor = dialogue.split('|')[0];
 				var text = dialogue.split('|')[1];
+				trace(event[0]);
 				if (text.indexOf("/dq/") >= 0) {
 					// undo us changing double quotes
 					var undqreg = ~/\/dq\//g;
