@@ -3,7 +3,8 @@ import GameEvent.EventType;
 class EventController {
 	public static final instance:EventController = new EventController();
 
-	var time:Int = 11 * 60 + 45; // in minutes
+	public var time:Int = 11 * 60 + 45; // in minutes
+
 	var events:List<GameEvent>;
 
 	public var triggeredEvents = new Map<String, GameEvent>();

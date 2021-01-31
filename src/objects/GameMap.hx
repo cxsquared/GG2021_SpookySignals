@@ -9,6 +9,7 @@ class GameMap extends h2d.Object {
 	var playerChar:h2d.Bitmap;
 	var mapPoint:MapPoint;
 	var jenkinson:Bitmap;
+	var bmp:Bitmap;
 
 	public var canMove = true;
 
@@ -17,7 +18,7 @@ class GameMap extends h2d.Object {
 
 		// image background
 		var tile = hxd.Res.map.toTile();
-		var bmp = new h2d.Bitmap(tile, this);
+		bmp = new h2d.Bitmap(tile, this);
 
 		var mapBounds = bmp.getBounds();
 		var interaction = new h2d.Interactive(mapBounds.width, mapBounds.height, this);
@@ -68,6 +69,12 @@ class GameMap extends h2d.Object {
 				jenkinson.visible = true;
 			}
 		}
+	}
+
+	public function resetPlayer() {
+		var mapBounds = bmp.getBounds();
+		var playerBounds = playerChar.getBounds();
+		updatePlayer(mapBounds.width / 2 - playerBounds.width / 2 - 32, mapBounds.height / 2 - playerBounds.height / 2 - 32);
 	}
 
 	function updatePlayer(x:Float, y:Float) {
