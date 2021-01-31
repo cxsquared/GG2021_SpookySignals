@@ -115,7 +115,7 @@ class Radio extends h2d.Object {
 		var angleAngel = Math.atan2(event.relY, event.relX);
 		trace(angleAngel);
 		//angleAngel = hxd.Math.clamp(angleAngel, -1.0, 1.0);		
-		//knob.rotation += angleAngel * .08;
+		knob.rotation += angleAngel * .08;
 
 		//set rotation code
 		/*
@@ -137,7 +137,6 @@ class Radio extends h2d.Object {
 			line.x = minLine;
 		if (line.x > maxLine)
 			line.x = maxLine;
-
 
 		//95 - 115
 		//freq count
