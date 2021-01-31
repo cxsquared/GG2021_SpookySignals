@@ -51,6 +51,10 @@ class GameMap extends h2d.Object {
 		setLocation(iconTreeHouse, 'd', 4);
 		var corn = new h2d.Bitmap(hxd.Res.IconCorn.toTile(), this);
 		setLocation(corn, 'e', 5);
+		var cem = new h2d.Bitmap(hxd.Res.IconCemetary.toTile(), this);
+		setLocation(cem, 'g', 3);
+		var house = new h2d.Bitmap(hxd.Res.IconHouse.toTile(), this);
+		setLocation(house, 'd', 8);
 
 		// player character
 		var pTile = hxd.Res.Stickman.toTile();
