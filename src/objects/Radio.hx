@@ -11,11 +11,13 @@ class Radio extends h2d.Object {
     public var changeCallback : Void -> Void;
     public var frequency : Float;
     
-    var line : Graphics;
+    var line : h2d.Bitmap;
+    var knob : h2d.Bitmap;
+    var tuning = false;
     var noise : hxd.snd.Channel;
 
-    var minLine = 50;
-    var maxLine = 250;
+    var minLine = 100;
+    var maxLine = 360;
 
     var minFreq = 88;
     var maxFreq = 108;
@@ -28,25 +30,30 @@ class Radio extends h2d.Object {
 		var bmp = new h2d.Bitmap(tile, this);
         
         //the line for tunin'
-        line = new h2d.Graphics(parent);
-        line.beginFill(0x009900);
-        line.drawRect(0,0,20,100);
-        line.endFill();
+        tile = hxd.Res.radioLine.toTile();
+        line = new h2d.Bitmap(tile, this);
 
         line.x = minLine;
-        line.y = 30;
+        line.y = 215;
 
         //radio sound
         var res = if( hxd.res.Sound.supportedFormat(Wav) ) hxd.Res.audio.radioNoise else null;
         noise = res.play(true);
         noise.pause = true;
 
-        //intraction
-        var interaction = new h2d.Interactive(20,100, line);
+        //knob
+        var tile = hxd.Res.radioDial.toTile();
+        knob = new h2d.Bitmap(tile, this);
+        knob.x = 320;
+        knob.y = 260;
+        
+        var knobInteraction = new h2d.Interactive(60,60, knob);
 
-        //begin draggening
-        interaction.onPush = function(event : hxd.Event) {
-            interaction.startDrag( doDrag );
+        knobInteraction.onPush = function(event : hxd.Event) {
+
+            knobInteraction.startDrag( doDrag );
+
+            tuning = true;
 
             //begin the noisening
             if( res != null ) {
@@ -54,17 +61,15 @@ class Radio extends h2d.Object {
             }
         }
 
-        //stops the dragging, sets the freq, and emits emit
-        interaction.onRelease = function(event : hxd.Event) {
+        knobInteraction.onRelease = function(event : hxd.Event) {
             //end drag
-            interaction.stopDrag();
+            knobInteraction.stopDrag();
 
             //end sound
             noise.pause = true;
 
             //calc freq
             this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq-this.minFreq) + this.minFreq;
-
 
             //emit event
             if(onChange != null) {
