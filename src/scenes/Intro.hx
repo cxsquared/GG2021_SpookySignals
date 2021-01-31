@@ -8,6 +8,8 @@ class Intro extends BaseScene {
 	public function new(app:App) {
 		super(app);
 
+		var bg = new h2d.Bitmap(hxd.Res.StartingScreen.toTile(), this);
+
 		dc = new DialogueController(this);
 		dc.onFinish(onDialogueFinish);
 		dc.addDialouge(new Dialogue("KATIE", "Alright... looks like we're recording now."));
