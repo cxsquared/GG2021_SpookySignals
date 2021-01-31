@@ -1,11 +1,10 @@
-import h2d.col.Point;
 import GameEvent.EventType;
 
 class EventController {
 	public static final instance:EventController = new EventController();
 
-	var time:Int = 0; // in minutes
-	var events:Array<GameEvent>;
+	var time:Int = 11 * 60 + 45; // in minutes
+	var events:List<GameEvent>;
 	var triggeredEvents = new Map<String, GameEvent>();
 	var speed:Int = 0; // 0 paused, 1 regular, 2 medium, 3 fast
 	var currentDt:Float = 0;
@@ -33,7 +32,7 @@ class EventController {
 		var eventRows = csv.parseSheet();
 		eventRows.shift(); // remove the headers
 
-		this.events = new Array<GameEvent>();
+		this.events = new List<GameEvent>();
 
 		for (event in eventRows) {
 			var type = EventType.createByName(event[1]);
@@ -43,7 +42,23 @@ class EventController {
 					dependsOn.push(eventId);
 			}
 
-			var newEvent = new GameEvent(event[0], event[2], event[3], dependsOn, this.timeToInt(event[7]));
+			var dialogues = new Array<Dialogue>();
+			var dialogueLines = event[2].split(';');
+			for (dialogue in dialogueLines) {
+				var actor = dialogue.split('|')[0];
+				var text = dialogue.split('|')[1];
+				dialogues.push(new Dialogue(actor, text));
+			}
+
+			var times = new Array<TimeRequirement>();
+			var timeLines = event[7].split(',');
+			for (time in timeLines) {
+				var mod = time.substr(0, 2);
+				var time = time.substr(2);
+				times.push(new TimeRequirement(timeToInt(time), TimeModifier.createByName(mod)));
+			}
+
+			var newEvent = new GameEvent(event[0], dialogues, event[3], dependsOn, times);
 
 			switch (type) {
 				case Radio:
@@ -54,18 +69,15 @@ class EventController {
 					// Do nothing for Event type
 			}
 
-			this.events.push(newEvent);
+			this.events.add(newEvent);
 		}
-
-		// sort by time
-		this.events.sort((a, b) -> a.time - b.time);
 	}
 
 	private function timeToInt(time:String):Int {
 		var hour = Std.parseInt(time.split(':')[0]);
 		var min = Std.parseInt(time.split(':')[1]);
 
-		return min + Std.int(Math.max(0, hour - 7)) * 60;
+		return min + Std.int(hour) * 60;
 	}
 
 	public function setSpeed(speed:Int) {
@@ -84,7 +96,7 @@ class EventController {
 
 	public function getTimeString():String {
 		var min = this.time % 60;
-		var hour = Math.floor(this.time / 60) + 7; // 7 hour offest?
+		var hour = Math.floor(this.time / 60);
 
 		var minText = "";
 		if (min < 10) {
@@ -105,27 +117,32 @@ class EventController {
 		this.currentDt = 0;
 		this.time += 15; // each tick is 15 minutes
 
-		while (this.events.length > 0 && this.events[0].time <= this.time) {
-			var potentialEvent = events.shift();
+		for (event in this.events) {
+			var hasTriggered = false;
 
-			// Actually check radio and map stuff
-			if (potentialEvent.type == Radio && !between(potentialEvent.freq, freq, freqRange)) {
+			if (event.type == Radio && !between(event.freq, freq, freqRange)) {
 				continue; // skip this event
-			} else if (potentialEvent.type == Map && potentialEvent.location != location) {
+			} else if (event.type == Map && event.location != location) {
 				continue; // skip this event
 			}
 
-			if (potentialEvent.dependsOn.length > 0) {
-				for (eventId in potentialEvent.dependsOn) {
+			if (event.dependsOn.length > 0) {
+				for (eventId in event.dependsOn) {
 					if (!this.triggeredEvents.exists(eventId)) {
 						continue; // skip this event
 					}
 				}
 			}
 
-			for (fn in listeners) {
-				fn(potentialEvent);
+			if (event.shouldTrigger(time)) {
+				for (fn in listeners) {
+					fn(event);
+				}
+				hasTriggered = true;
 			}
+
+			if (hasTriggered || event.shouldRemove(time))
+				events.remove(event); // We can do this because it's a list not an array
 		}
 	}
 

@@ -17,8 +17,8 @@ class UpdateList extends h2d.Flow {
 		this.x = 300;
 	}
 
-	public function addUpdate(update:String) {
+	public function addUpdate(update:Dialogue) {
 		var tf = new h2d.Text(DefaultFont.get(), this);
-		tf.text = update;
+		tf.text = update.text;
 	}
 }
