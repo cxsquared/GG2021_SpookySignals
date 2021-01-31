@@ -1,4 +1,3 @@
-import hxd.snd.Manager;
 import hxd.snd.Channel;
 import hxd.res.Sound;
 
@@ -16,11 +15,6 @@ class MusicController {
 	public function setFreq(freq:Float) {
 		var wholeFreq = Math.round(freq);
 
-		if (music.exists(wholeFreq)) {
-			var sound = music.get(wholeFreq);
-			if (sound == currentlyPlaying) {
-				channel = Manager.get().
-			}
-		}
+		if (music.exists(wholeFreq)) {}
 	}
 }
