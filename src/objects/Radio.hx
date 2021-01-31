@@ -1,5 +1,6 @@
 package objects;
 
+import hxd.Window;
 import h2d.col.Circle;
 import h2d.col.Point;
 import h2d.Scene;
@@ -8,21 +9,24 @@ import hxd.res.DefaultFont;
 import h2d.Object;
 import h2d.Graphics;
 import h2d.Interactive;
+import h2d.Text;
 
 class Radio extends h2d.Object {
 	public var changeCallback:Void->Void;
 	public var frequency:Float;
 
 	var line:h2d.Bitmap;
-	var knob:h2d.Bitmap;
+	var knob:Object;
 	var tuning = false;
 	var noise:hxd.snd.Channel;
+	var bubble:h2d.Bitmap;
+	var hrzTxt:Text;
 
 	var minLine = 100;
 	var maxLine = 360;
 
-	var minFreq = 88;
-	var maxFreq = 108;
+	var minFreq = 80;
+	var maxFreq = 120;
 
 	public var canMove = true;
 
@@ -40,6 +44,21 @@ class Radio extends h2d.Object {
 		line.x = minLine;
 		line.y = 215;
 
+		//bubble
+		bubble = new h2d.Bitmap(hxd.Res.hertzBubble.toTile(), this);
+		bubble.x = 60;
+		bubble.y = -40;
+
+		var myFontona = hxd.res.DefaultFont.get();
+		myFontona.resizeTo(72);
+		hrzTxt = new Text(myFontona, this);
+		hrzTxt.textColor = 0x000000;
+		//hrzTxt.scale(2);
+		hrzTxt.x = 190;
+		hrzTxt.y = -10;
+		hrzTxt.textAlign = Center;
+		hrzTxt.text = "88.1"+"hz";
+
 		// radio sound
 		var res = if (hxd.res.Sound.supportedFormat(Wav)) hxd.Res.audio.radioNoise else null;
 		noise = res.play(true);
@@ -47,15 +66,17 @@ class Radio extends h2d.Object {
 
 		// knob
 		var tile = hxd.Res.radioDial.toTile();
-		tile = tile.center();
-		knob = new h2d.Bitmap(tile, this);
+		knob = new Object(this);
+		var knobGfx = new h2d.Bitmap(tile, knob);
+		knobGfx.x = - knob.getBounds().width / 2;
+		knobGfx.y = - knob.getBounds().height / 2;
 		knob.x = 355;
 		knob.y = 295;
 
 		var knobB = knob.getBounds();
 
 		var knobInteraction = new h2d.Interactive(knobB.width, knobB.height, knob);
-		knobInteraction.isEllipse = true;
+		//knobInteraction.isEllipse = true;
 		knobInteraction.x -= knobB.width / 2;
 		knobInteraction.y -= knobB.height / 2;
 
@@ -100,9 +121,22 @@ class Radio extends h2d.Object {
 		var knobB = knob.getBounds();
 
 		// Math for angle-ish
-
 		var angleAngel = Math.atan2(event.relY, event.relX);
-		knob.rotation += angleAngel * .08;
+		trace(angleAngel);
+		//angleAngel = hxd.Math.clamp(angleAngel, -1.0, 1.0);		
+		//knob.rotation += angleAngel * .08;
+
+		//set rotation code
+		/*
+		var p = this.localToGlobal( new Point(knob.x, knob.y) );
+		var p2 = this.globalToLocal( new Point( Window.getInstance().mouseX, Window.getInstance().mouseY) );
+		var dx = p2.x - (knob.x + knob.getBounds().width/2);
+		var dy = p2.y - (knob.y + knob.getBounds().height/2);
+		
+		var umg = Math.atan2(dy,dx);
+		trace(dx, dy, umg);
+		knob.rotation = umg;
+		 */
 
 		// use the angle velocity to move the line
 		line.x += angleAngel * .8;
@@ -112,5 +146,18 @@ class Radio extends h2d.Object {
 			line.x = minLine;
 		if (line.x > maxLine)
 			line.x = maxLine;
+
+
+		//95 - 115
+		//freq count
+		this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
+		hrzTxt.text = toFixed(this.frequency) + "hz";
+	}
+
+	function toFixed(num : Float) : Float {
+		num *= 10;
+		var nnum = Math.fround(num);
+		nnum /= 10;
+		return nnum;
 	}
 }
