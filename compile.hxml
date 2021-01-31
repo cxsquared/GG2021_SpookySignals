@@ -4,3 +4,4 @@
 -js hello.js
 -main Main 
 --resource res/events.csv@events
+--debug

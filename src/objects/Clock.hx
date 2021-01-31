@@ -73,7 +73,7 @@ class Clock extends Object {
 		}
 
 		// three
-		three = new Bitmap(tiles[7], this);
+		three = new Bitmap(tiles[6], this);
 		three.x += 235 + baseX;
 		three.y += cy + baseY;
 		var threeInteraction = new h2d.Interactive(interactSize, interactSize, three);

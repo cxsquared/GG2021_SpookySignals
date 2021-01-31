@@ -161,10 +161,8 @@ class EventController {
 				hasTriggered = true;
 			}
 
-			/*
-				if (hasTriggered || event.shouldRemove(time))
-					events.remove(event); // We can do this because it's a list not an array
-			 */
+			if (hasTriggered)
+				events.remove(event); // We can do this because it's a list not an array
 		}
 	}
 
