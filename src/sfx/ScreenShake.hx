@@ -7,7 +7,7 @@ import h2d.Object;
 class ScreenShake {
 
 
-    public var shakeDuration = 1.0;
+    public var shakeDuration = 0.0;
     public var shakeIntensity = 2.0;
 
     private var sx : Float;
@@ -26,6 +26,8 @@ class ScreenShake {
         sx = obj.x;
         sy = obj.y;
         shakeActive = true;
+        trace("hi!");
+        trace(shakeActive);
     }
 
     public function update(dt:Float) {
@@ -37,6 +39,7 @@ class ScreenShake {
         else 
         {
             if(shakeActive) {
+                trace("Shake over");
                 shakeActive = false;
                 obj.x = sx;
                 obj.y = sy;
