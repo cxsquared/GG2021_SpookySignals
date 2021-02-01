@@ -47,6 +47,7 @@ class EventController {
 		for (event in eventRows) {
 			var type = EventType.createByName(event[1]);
 			var dependsOn = new Array<String>();
+
 			for (eventId in event[4].split('|')) {
 				if (eventId.length > 0)
 					dependsOn.push(eventId);
@@ -57,7 +58,9 @@ class EventController {
 			for (dialogue in dialogueLines) {
 				var actor = dialogue.split('|')[0];
 				var text = dialogue.split('|')[1];
-				trace(event[0]);
+				if (text.length <= 0 || actor.length <= 0)
+					continue;
+
 				if (text.indexOf("/dq/") >= 0) {
 					// undo us changing double quotes
 					var undqreg = ~/\/dq\//g;

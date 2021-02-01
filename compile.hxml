@@ -1,6 +1,9 @@
 -cp src
 -lib heaps
 -lib actuate
--js hello.js
+-lib hlsdl
+-hl game.hl 
 -main Main 
---resource res/events.csv@events
+-D windowSize=1280x720
+-D windowTitle=Spooky Signals
+-D windowFixed=1

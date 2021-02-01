@@ -50,3 +50,6 @@ bin
 .tmp
 /*.xml
 *.exe
+*.hl
+out
+Error

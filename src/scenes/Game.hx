@@ -67,7 +67,7 @@ class Game extends BaseScene {
 		r = new Radio(this);
 		r.y = 360;
 		r.onChange(function() {
-			trace(r.frequency);
+			// trace(r.frequency);
 		});
 
 		// test
@@ -184,7 +184,8 @@ class Game extends BaseScene {
 				"I know. You can take a break. Just remember to still take your equipment. It starts at noon so that should still be plenty of time for us to do some investigating."));
 			dialogeController.addDialouge(new Dialogue("Katie", "Yes! Funnel cake here I come!"));
 		} else {
-			dialogeController.addDialouge(new Dialogue("Brandon", "The start of a new day! We should listen to news on the radio or explore a little."));
+			dialogeController.addDialouge(new Dialogue("Brandon",
+				"The start of a new day! We should listen to news at 100.3 on the radio or explore a little."));
 			dialogeController.addDialouge(new Dialogue("Katie", "And don't forget we can speed up time with the clock if we need to."));
 		}
 	}
@@ -226,6 +227,8 @@ class Game extends BaseScene {
 		EventController.instance.canChangeSpeed = false;
 		r.canMove = false;
 		gmap.canMove = false;
+		r.stop();
+		gmap.stopPlayer();
 	}
 
 	function onDialogueFinish() {

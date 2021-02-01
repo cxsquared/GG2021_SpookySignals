@@ -1,8 +1,5 @@
 package objects;
 
-import hxd.Window;
-import h2d.col.Circle;
-import h2d.col.Point;
 import h2d.Scene;
 import h2d.Object;
 import h2d.Interactive;
@@ -12,8 +9,11 @@ class Radio extends h2d.Object {
 	public var changeCallback:Void->Void;
 	public var frequency:Float;
 
+	var scene:Scene;
+
 	var line:h2d.Bitmap;
 	var knob:Object;
+	var knobInteraction:Interactive;
 	var tuning = false;
 	var noise:hxd.snd.Channel;
 	var bubble:h2d.Bitmap;
@@ -33,6 +33,8 @@ class Radio extends h2d.Object {
 
 	public function new(parent:Scene) {
 		super(parent);
+
+		this.scene = parent;
 
 		// image background
 		var tile = hxd.Res.radio.toTile();
@@ -74,9 +76,8 @@ class Radio extends h2d.Object {
 		knob.y = 295;
 		var knobB = knob.getBounds();
 
-		var knobInteraction = new h2d.Interactive(knobB.width, knobB.height, knob);
+		knobInteraction = new h2d.Interactive(knobB.width, knobB.height, knob);
 
-		// knobInteraction.isEllipse = true;
 		knobInteraction.isEllipse = true;
 		knobInteraction.x -= knobB.width / 2;
 		knobInteraction.y -= knobB.height / 2;
@@ -96,17 +97,19 @@ class Radio extends h2d.Object {
 			}
 		}
 
-		knobInteraction.onRelease = function(event:hxd.Event) {
-			// end drag
-			knobInteraction.stopDrag();
-			// end sound
-			noise.pause = true;
-			// calc freq
-			this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
-			// emit event
-			if (onChange != null) {
-				this.changeCallback();
-			}
+		knobInteraction.onRelease = onKnobRelease;
+	}
+
+	function onKnobRelease(?event:hxd.Event) {
+		// end drag
+		knobInteraction.stopDrag();
+		// end sound
+		noise.pause = true;
+		// calc freq
+		this.frequency = (line.x / (this.maxLine - this.minLine)) * (this.maxFreq - this.minFreq) + this.minFreq;
+		// emit event
+		if (onChange != null) {
+			this.changeCallback();
 		}
 	}
 
@@ -116,36 +119,20 @@ class Radio extends h2d.Object {
 
 	// make the drag more
 	private function doDrag(event:hxd.Event) {
-		var prevAngle = knob.rotation;
-		var knobB = knob.getBounds();
+		var knobX = this.x + knob.x; // knob is based on the parent
+		var knobY = this.y + knob.y; // knob is based on the parent
+		var currentX = scene.mouseX;
+		var currentY = scene.mouseY;
 
-		var dx = lpx - event.relX;
-		var dy = lpy - event.relY;
-		lpx = event.relX;
-		lpy = event.relY;
-
-		// Math for angle-ish
-		var angleAngel = Math.atan2(event.relY, event.relX);
-		// trace(dx,dy,angleAngel);
-		// trace(angleAngel);
-		// knob.rotation = angleAngel;
-
-		// set rotation code
-		var p = this.localToGlobal(new Point(knob.x, knob.y));
-		var p2 = this.globalToLocal(new Point(Window.getInstance().mouseX, Window.getInstance().mouseY));
-		var dx = p2.x - (knob.x + knob.getBounds().width / 2);
-		var dy = p2.y - (knob.y + knob.getBounds().height / 2);
-
-		var umg = Math.atan2(dy, dx);
-		knob.rotation = umg;
+		var newAngle = Math.atan2(currentY - knobY, currentX - knobX);
+		newAngle += Math.PI / 2; // Offset 90
+		knob.rotation = newAngle;
 
 		var rdiff = lr - knob.rotation;
-
 		if (Math.abs(rdiff) > .07) {
 			rdiff = 0;
 		}
 
-		trace(rdiff);
 		// use the angle velocity to move the line
 		line.x -= rdiff * 30;
 
@@ -168,5 +155,10 @@ class Radio extends h2d.Object {
 		var nnum = Math.fround(num);
 		nnum /= 10;
 		return nnum;
+	}
+
+	public function stop() {
+		canMove = false;
+		onKnobRelease();
 	}
 }

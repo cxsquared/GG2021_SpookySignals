@@ -214,7 +214,7 @@ class DialogueController extends Object {
 		if (lowerActor.indexOf("brandon") >= 0)
 			return ports[1];
 
-		if (lowerActor.indexOf("Jenkinson") >= 0)
+		if (lowerActor.indexOf("podcast") >= 0 || lowerActor.indexOf('jenkinson') >= 0)
 			return ports[2];
 
 		return null;

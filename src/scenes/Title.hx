@@ -10,12 +10,11 @@ class Title extends BaseScene {
 		var tile = hxd.Res.bg.toTile();
 		var bg = new h2d.Bitmap(tile, this);
 
-        var tile = hxd.Res.bg.toTile();
-        var bg = new h2d.Bitmap(tile, this);
-        var logo = new h2d.Bitmap(hxd.Res.logo.toTile(), this);
-        logo.y = 160;
-        logo.x = 150;
-
+		var tile = hxd.Res.bg.toTile();
+		var bg = new h2d.Bitmap(tile, this);
+		var logo = new h2d.Bitmap(hxd.Res.logo.toTile(), this);
+		logo.y = 160;
+		logo.x = 150;
 
 		var playBtn = new h2d.Bitmap(hxd.Res.btnPlay.toTile(), this);
 		playBtn.y = 450;
@@ -27,7 +26,7 @@ class Title extends BaseScene {
 
 		credits.text = "A game by Cody Claborn (@cxsquared), Kayleigh Jones (@Foxxie_Q),\n Travis Faas (@meanderingleaf), and Gabrielle Bayani (@starafires)";
 
-		var interaction = new h2d.Interactive(playBtn.width, playBtn.height, playBtn);
+		var interaction = new h2d.Interactive(playBtn.getBounds().width, playBtn.getBounds().height, playBtn);
 
 		interaction.onClick = function(event:hxd.Event) {
 			app.setScene(new Intro(app));

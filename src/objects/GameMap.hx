@@ -1,5 +1,6 @@
 package objects;
 
+import motion.actuators.GenericActuator;
 import motion.easing.Linear;
 import motion.easing.Elastic;
 import motion.easing.Quad;
@@ -94,7 +95,9 @@ class GameMap extends h2d.Object {
 				dc.push(new Dialogue("Brandon",
 					"What if by formuala 1 he means F1? Look at this map of Westbrook! The coordinates F and 1 meet up in the middle of nowhere! "));
 				dc.push(new Dialogue("Katie", "That's where his house could be! Great work Brandon! Now I just have to be there at 7:30 in the morning!"));
-				onGameEvent(new GameEvent("099_event", dc, "", new Array<String>(), [new TimeRequirement(0, GE)]));
+				var ge = new GameEvent("099_event", dc, "", new Array<String>(), [new TimeRequirement(0, GE)]);
+				EventController.instance.triggeredEvents.set('099_event', ge);
+				onGameEvent(ge);
 			}
 		}
 	}
@@ -128,5 +131,10 @@ class GameMap extends h2d.Object {
 		var objBounds = obj.getBounds();
 		obj.y = mapPoint.letterLocationToFloat(letter);
 		obj.x = mapPoint.numberLocationToFloat(number) - objBounds.height / 2;
+	}
+
+	public function stopPlayer() {
+		canMove = false;
+		Actuate.stop(updatePlayer, ["x", "y"]);
 	}
 }

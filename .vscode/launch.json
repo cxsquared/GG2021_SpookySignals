@@ -11,6 +11,16 @@
                 "type": "haxe",
                 "args": "active configuration"
             }
+        },
+        {
+            "type": "hl",
+            "request": "launch",
+            "name": "Hashlink",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": {
+                "type": "haxe",
+                "args": "active configuration"
+            }
         }
     ]
 }

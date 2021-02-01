@@ -1,7 +1,6 @@
 import scenes.Title;
 import scenes.Game;
 import scenes.BaseScene;
-import scenes.Intro;
 
 class Main extends hxd.App {
 	override function init() {
