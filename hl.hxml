@@ -1,0 +1,6 @@
+base.hxml
+-lib hldx
+-D windowSize=1280x720
+-D windowTitle=Spooky Signals
+-D windowFixed=1
+-hl bin/game.hl

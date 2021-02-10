@@ -30,11 +30,14 @@ class Game extends BaseScene {
 	var nightBG:Bitmap;
 	var dayEnding = false;
 	var umg:LightningOverlay;
+	var music:MusicController;
 
 	var ss:ScreenShake;
 
 	public function new(app:App) {
 		super(app);
+
+		music = new MusicController();
 
 		EventController.instance.loadEvents();
 		EventController.instance.setSpeed(1);
@@ -195,6 +198,7 @@ class Game extends BaseScene {
 
 		if (!dayEnding) {
 			EventController.instance.update(dt, r.frequency, gmap.getCharLocation());
+			music.setFreq(r.frequency);
 			dialogeController.update(dt);
 			c.setTimeText(EventController.instance.getTimeString());
 			ss.update(dt);

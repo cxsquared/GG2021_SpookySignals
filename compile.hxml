@@ -1,9 +1,0 @@
--cp src
--lib heaps
--lib actuate
--lib hlsdl
--hl game.hl 
--main Main 
--D windowSize=1280x720
--D windowTitle=Spooky Signals
--D windowFixed=1

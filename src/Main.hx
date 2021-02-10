@@ -18,7 +18,12 @@ class Main extends hxd.App {
 	}
 
 	static function main() {
+		// Heaps resources
+		#if (hl && debug)
+		hxd.Res.initLocal();
+		#else
 		hxd.Res.initEmbed();
+		#end
 		new Main();
 	}
 }
